@@ -1,20 +1,49 @@
-public class Room
+import java.awt.Point;
+
+public abstract class Room
 {
-    private Position roomPos;
-    
-    public Room(int x1, int x2, int y1, int y2)
+    protected int x1, x2, y1, y2;
+    protected int roomLevel;
+    protected Point center;
+
+    public Room(int x, int y, int w, int h, int level)
     {
-        roomPos = new Position(x1, x2, y1, y2);
+        x1 = x;
+        y1 = y;
+        x2 = x + w;
+        y2 = y + h;
+        center = new Point((x1+x2)/2, (y1+y2)/2);
+        roomLevel = level;
     }
-    
-    public Position getPos()
+
+    public int getX1()
     {
-        return roomPos;
+        return x1;
     }
-    
+
+    public int getX2()
+    {
+        return x2;
+    }
+
+    public int getY1()
+    {
+        return y1;
+    }
+
+    public int getY2()
+    {
+        return y2;
+    }
+
+    public Point getCenter()
+    {
+        return center;
+    }
+
     public boolean intersects(Room other)
-    {   
-        return (roomPos.compareX(other.getPos()) &&
-                roomPos.compareY(other.getPos()));
+    {
+        return (x1 <= other.getX2() && x2 >= other.getX1() &&
+                y1 <= other.getY2() && y2 >= other.getY1());
     }
 }

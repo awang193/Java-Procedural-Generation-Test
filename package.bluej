@@ -1,6 +1,6 @@
 #BlueJ package file
 dependency1.from=Room
-dependency1.to=Position
+dependency1.to=PosOld
 dependency1.type=UsesDependency
 editor.fx.0.height=722
 editor.fx.0.width=800
@@ -28,7 +28,7 @@ readme.width=47
 readme.x=10
 readme.y=10
 target1.height=50
-target1.name=Position
+target1.name=PosOld
 target1.showInterface=false
 target1.type=ClassTarget
 target1.width=80
