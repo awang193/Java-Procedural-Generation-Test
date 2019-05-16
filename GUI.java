@@ -19,6 +19,7 @@ public class GUI extends Application
     @Override
     public void start(Stage stage)
     {
+        DungeonTree tree = new DungeonTree();
         System.exit(0);
     }
 

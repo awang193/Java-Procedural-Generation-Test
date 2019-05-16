@@ -27,8 +27,6 @@ public class MonsterRoom extends Room
                     break;
             }
 
-            for (Monster m : monsters)
-                if m.
         }
     }
 
