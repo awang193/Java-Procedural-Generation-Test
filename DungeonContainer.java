@@ -1,12 +1,12 @@
 import java.awt.*;
-import java.awt.geom.Point2D;
+import java.awt.Point;
 import java.util.ArrayList;
 
 public class DungeonContainer
 {
     private int x, y, w, h;
     private Room room;
-    private Point2D.Double center;
+    private Point center;
 
     public DungeonContainer(int xPos, int yPos, int wid, int hei, Room newRoom)
     {
@@ -16,7 +16,7 @@ public class DungeonContainer
         int h = hei;
 
         room = newRoom;
-        center = new Point2D.Double(x + w/2, y + h/2);
+        center = new Point(x + w/2, y + h/2);
     }
 
     public int getX()
