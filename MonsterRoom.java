@@ -5,12 +5,16 @@ public class MonsterRoom extends Room
     private int numMonst;
     private ArrayList<Monster> monsters;
 
-    public MonsterRoom(int x, int y, int w, int h, int level)
+    public MonsterRoom(DungeonContainer container, int level)
     {
-        super(x, y, w, h, level);
+        super(container, level);
         monsters = new ArrayList<Monster>();
+        placeMonsters();
+    }
 
-        numMonst = w * h / 80 * level;
+    private void placeMonsters()
+    {
+        numMonst = w * h / 80 * roomLevel;
 
         for (int i = 0; i < numMonst; i++)
         {

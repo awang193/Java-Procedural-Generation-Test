@@ -1,49 +1,48 @@
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
 public abstract class Room
 {
-    protected int x1, x2, y1, y2;
+    protected int x, y, w, h;
     protected int roomLevel;
-    protected Point center;
+    protected Point2D.Double center;
 
-    public Room(int x, int y, int w, int h, int level)
+    public Room(DungeonContainer container, int level)
     {
-        x1 = x;
-        y1 = y;
-        x2 = x + w;
-        y2 = y + h;
-        center = new Point((x1+x2)/2, (y1+y2)/2);
+        x = container.getX() + ExtraTools.randomRange(0, container.getW() / 3);
+        y = container.getY() + ExtraTools.randomRange(0, container.getH() / 3);
+        w = container.getW() - (this.x - container.getX());
+        h = container.getH() - (this.y - container.getY());
+
+        w -= ExtraTools.randomRange(0, w/3);
+        h -= ExtraTools.randomRange(0, h/3);
+
+        center = new Point2D.Double((double)x + w/2, (double)y + h/2);
         roomLevel = level;
     }
 
-    public int getX1()
+    public int getX()
     {
-        return x1;
+        return x;
     }
 
-    public int getX2()
+    public int getY()
     {
-        return x2;
+        return y;
     }
 
-    public int getY1()
+    public int getW()
     {
-        return y1;
+        return w;
     }
 
-    public int getY2()
+    public int getH()
     {
-        return y2;
+        return x;
     }
 
-    public Point getCenter()
+    public Point2D.Double getCenter()
     {
         return center;
-    }
-
-    public boolean intersects(Room other)
-    {
-        return (x1 <= other.getX2() && x2 >= other.getX1() &&
-                y1 <= other.getY2() && y2 >= other.getY1());
     }
 }

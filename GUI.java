@@ -20,6 +20,9 @@ public class GUI extends Application
     public void start(Stage stage)
     {
         DungeonTree tree = new DungeonTree();
+        tree.updateMap();
+        tree.drawMap();
+
         System.exit(0);
     }
 

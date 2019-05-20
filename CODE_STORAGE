@@ -1,0 +1,168 @@
+public DungeonTree()
+{
+    leaves = new ArrayList<DungeonLeaf>();
+    leaves.add(new DungeonLeaf(0, 0, DUNGEON_LENGTH, DUNGEON_LENGTH));
+
+    boolean hasSplit = true;
+
+    while (hasSplit)
+    {
+        hasSplit = false;
+
+        for (int i = 0; i < leaves.size(); i++)
+        {
+            DungeonLeaf leaf = leaves.get(i);
+
+            if (leaf.getLeft() == null && leaf.getRight() == null)
+            {
+                if ((leaf.getWidth() > MAX_LENGTH || leaf.getHeight() > MAX_LENGTH) &&
+                    leaf.split())
+                {
+                    leaves.add(leaf.getLeft());
+                    leaves.add(leaf.getRight());
+                    hasSplit = true;
+                }
+            }
+        }
+    }
+}
+
+public boolean split()
+{
+    Random rand = new Random();
+
+    boolean ret = false;
+
+    if (left == null && right == null)
+    {
+        boolean splitH = rand.nextBoolean();
+
+        if ((double)width / height >= 1.25)
+            splitH = false;
+        if ((double)height / width >= 1.25)
+            splitH = true;
+
+        int maxLen = (splitH ? height : width) - MIN_LEAF_SIZE;
+        int splitOffset = MIN_LEAF_SIZE + (maxLen - MIN_LEAF_SIZE < 1 ? 0 : rand.nextInt(maxLen - MIN_LEAF_SIZE));
+
+        if (splitH)
+        {
+            left = new DungeonLeaf(xPos, yPos, width, splitOffset);
+            right = new DungeonLeaf(xPos, yPos + splitOffset, width, height - splitOffset);
+        }
+        else
+        {
+            left = new DungeonLeaf(xPos, yPos, splitOffset, height);
+            right = new DungeonLeaf(xPos + splitOffset, yPos, width - splitOffset, height);
+        }
+
+        ret = true;
+    }
+
+    return ret;
+}
+
+
+
+
+public void updateMap()
+{
+    int num = 1;
+
+    for (DungeonLeaf leaf : leaves)
+    {
+        for (int r = 0; r < leaf.getHeight(); r++)
+        {d
+            for (int c = 0; c < leaf.getWidth(); c++)
+            {
+                map[r][c] = num;
+            }
+        }
+
+        num++;
+    }
+}
+
+public void drawMap()
+{
+    for (int r = 0; r < map.length; r++)
+    {
+        for (int c = 0; c < map[r].length; c++)
+        {
+            System.out.print(Format.left(map[r][c], 4));
+        }
+        System.out.println();
+    }
+}
+
+
+// DUNGEONLEAF
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Random;
+
+public class DungeonLeaf
+{
+    private final int MIN_LEAF_SIZE = 5;
+    private int xPos, yPos, width, height;
+
+    private Room room;
+    private ArrayList<Hallway> hallways = new ArrayList<Hallway>();
+
+    private DungeonLeaf left, right;
+
+    public DungeonLeaf(int x, int y, int w, int h)
+    {
+        xPos = x;
+        yPos = y;
+        width = w;
+        height = h;
+    }
+
+    public DungeonLeaf getLeft()
+    {
+        return left;
+    }
+
+    public DungeonLeaf getRight()
+    {
+        return right;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public ArrayList<DungeonLeaf> getLeaves()
+    {
+        ArrayList<DungeonLeaf> leaves = new ArrayList<DungeonLeaf>();
+
+        if (left != null && right != null)
+        {
+            for (DungeonLeaf leaf : left.getLeaves())
+                leaves.add(leaf);
+            for (DungeonLeaf leaf : right.getLeaves())
+                leaves.add(leaf);
+        }
+
+
+    }
+
+    public boolean split()
+    {
+        return true;
+    }
+
+
+    public void update()
+    {
+
+    }
+}
