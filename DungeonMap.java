@@ -7,6 +7,7 @@ public class DungeonMap
     private final double H_DISCARD_RATIO = 0.45;
 
     private int mapWidth, mapHeight, mapLevel;
+    private int[][] tileMap;
 
     private ArrayList<Room> rooms;
     private DungeonTreeNode dungeontree;
@@ -17,6 +18,8 @@ public class DungeonMap
         mapHeight = height;
         mapLevel = level;
 
+        tileMap = new int[mapWidth][mapHeight];
+        
         rooms = new ArrayList<Room>();
         dungeontree = null;
     }
@@ -30,7 +33,7 @@ public class DungeonMap
     public void binarySpacePartition()
     {
         DungeonContainer mainContainer = new DungeonContainer(0, 0, mapWidth, mapHeight, null);
-        dungeontree = splitContainer(mainContainer, 4);
+        dungeontree = splitContainer(mainContainer, 3);
     }
 
     public void placeRooms()
@@ -44,6 +47,28 @@ public class DungeonMap
             dc.setRoom(temp);
             rooms.add(dc.getRoom());
         }
+    }
+    
+    public void initializeTileMap()
+    {
+        for (DungeonContainer dc : dungeontree.getLeaves())
+        {
+            Room temp = dc.getRoom();
+            
+            for (int x = temp.getX(); x < temp.getX() + temp.getW(); x++)
+            {
+                for (int y = temp.getY(); y < temp.getY() + temp.getH(); y++)
+                {
+                    tileMap[x][y] = 1;
+                }
+            }
+        }
+        
+        // IMPLEMENT HALLWAYS
+        
+        // IMPLEMENT WALL PLACEMENT
+        
+        // IMPLEMENT SPAWN AND TREASURE ROOM PLACEMENT
     }
 
     private ArrayList<DungeonContainer> randomSplit(DungeonContainer c)

@@ -19,6 +19,8 @@ public class GUI extends Application
     @Override
     public void start(Stage stage)
     {
+        DungeonMap newMap = new DungeonMap(50, 50, 1);
+        
         System.exit(0);
     }
 

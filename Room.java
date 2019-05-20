@@ -1,11 +1,10 @@
 import java.awt.Point;
-import java.awt.geom.Point2D;
 
 public abstract class Room
 {
     protected int x, y, w, h;
     protected int roomLevel;
-    protected Point2D.Double center;
+    protected Point center;
 
     public Room(DungeonContainer container, int level)
     {
@@ -17,7 +16,7 @@ public abstract class Room
         w -= ExtraTools.randomRange(0, w/3);
         h -= ExtraTools.randomRange(0, h/3);
 
-        center = new Point2D.Double((double)x + w/2, (double)y + h/2);
+        center = new Point(x + w/2, y + h/2);
         roomLevel = level;
     }
 
@@ -41,7 +40,7 @@ public abstract class Room
         return x;
     }
 
-    public Point2D.Double getCenter()
+    public Point getCenter()
     {
         return center;
     }
