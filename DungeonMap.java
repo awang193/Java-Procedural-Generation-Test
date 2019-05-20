@@ -3,8 +3,8 @@ import java.util.ArrayList;
 
 public class DungeonMap
 {
-    private final double W_DISCARD_RATIO = 0.6;
-    private final double H_DISCARD_RATIO = 0.6;
+    private final double W_DISCARD_RATIO = 0.45;
+    private final double H_DISCARD_RATIO = 0.45;
 
     private int mapWidth, mapHeight, mapLevel;
 
