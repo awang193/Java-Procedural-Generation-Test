@@ -13,6 +13,26 @@ public class DungeonTreeNode
         right = null;
     }
 
+    public DungeonContainer getLeaf()
+    {
+        return leaf;
+    }
+    
+    public DungeonTreeNode getLeft()
+    {
+        return left;
+    }
+    
+    public DungeonTreeNode getRight()
+    {
+        return right;
+    }
+    
+    public void setLeaf(DungeonContainer newLeaf)
+    {
+        leaf = newLeaf;
+    }
+    
     public void setLeft(DungeonTreeNode newLeft)
     {
         left = newLeft;

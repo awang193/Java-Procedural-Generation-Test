@@ -5,6 +5,7 @@ public class DungeonMap
 {
     private final double W_DISCARD_RATIO = 0.45;
     private final double H_DISCARD_RATIO = 0.45;
+    private final int TILE_WIDTH = 32;
 
     private int mapWidth, mapHeight, mapLevel;
     private int[][] tileMap;
@@ -23,20 +24,14 @@ public class DungeonMap
         rooms = new ArrayList<Room>();
         dungeontree = null;
     }
-
-    public void initialize()
-    {
-        binarySpacePartition();
-        placeRooms();
-    }
-
-    public void binarySpacePartition()
+    
+    private void binarySpacePartition()
     {
         DungeonContainer mainContainer = new DungeonContainer(0, 0, mapWidth, mapHeight, null);
         dungeontree = splitContainer(mainContainer, 3);
     }
 
-    public void placeRooms()
+    private void placeRooms()
     {
         int minLevel = 1 + mapLevel / 2;
         int maxLevel = mapLevel + 1;
@@ -46,14 +41,6 @@ public class DungeonMap
             Room temp = new MonsterRoom(dc, ExtraTools.randomRange(minLevel, maxLevel));
             dc.setRoom(temp);
             rooms.add(dc.getRoom());
-        }
-    }
-    
-    public void initializeTileMap()
-    {
-        for (DungeonContainer dc : dungeontree.getLeaves())
-        {
-            Room temp = dc.getRoom();
             
             for (int x = temp.getX(); x < temp.getX() + temp.getW(); x++)
             {
@@ -63,14 +50,58 @@ public class DungeonMap
                 }
             }
         }
+    }
+
+    private void placeHallways(DungeonTreeNode node)
+    {
+        DungeonTreeNode left = node.getLeft();
+        DungeonTreeNode right = node.getRight();
+        
+        while (left != null && right != null)
+        {
+            Point lcenter = left.getLeaf().getCenter();
+            Point rcenter = right.getLeaf().getCenter();
+            
+            int lx = (int)lcenter.getX();
+            int ly = (int)lcenter.getY();
+            int rx = (int)rcenter.getX();
+            int ry = (int)rcenter.getY();
+            
+            if (lx == rx)
+            {
+                for (int y = ly; y < ry; y++)
+                    tileMap[lx][y] = 1;
+            }
+            else
+            {
+                for (int x = lx; x < rx; x++)
+                    tileMap[x][ly] = 1;
+            }
+            
+            placeHallways(left);
+            placeHallways(right);
+        }
+    }
+    
+    private void initializeTileMap()
+    {
+        // INITIALIZE FLOOR TILES
+        placeRooms();
         
         // IMPLEMENT HALLWAYS
+        placeHallways(dungeontree);
         
         // IMPLEMENT WALL PLACEMENT
         
         // IMPLEMENT SPAWN AND TREASURE ROOM PLACEMENT
     }
-
+    
+    public void initialize()
+    {
+        binarySpacePartition();
+        initializeTileMap();
+    }
+    
     private ArrayList<DungeonContainer> randomSplit(DungeonContainer c)
     {
         ArrayList<DungeonContainer> split = new ArrayList<DungeonContainer>();

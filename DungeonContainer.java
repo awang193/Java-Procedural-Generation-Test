@@ -38,6 +38,11 @@ public class DungeonContainer
     {
         return h;
     }
+    
+    public Point getCenter()
+    {
+        return center;
+    }
 
     public Room getRoom()
     {

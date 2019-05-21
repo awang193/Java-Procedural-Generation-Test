@@ -20,6 +20,7 @@ public class GUI extends Application
     public void start(Stage stage)
     {
         DungeonMap newMap = new DungeonMap(50, 50, 1);
+        newMap.initialize();
         
         System.exit(0);
     }
