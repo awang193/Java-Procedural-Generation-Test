@@ -1,17 +1,22 @@
+package OLDAPPROACH;
+
+import javafx.scene.canvas.Canvas;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 public class DungeonMap
 {
-    private final double W_DISCARD_RATIO = 0.45;
-    private final double H_DISCARD_RATIO = 0.45;
+    private final double W_DISCARD_RATIO = 0.3;
+    private final double H_DISCARD_RATIO = 0.3;
     private final int TILE_WIDTH = 32;
 
     private int mapWidth, mapHeight, mapLevel;
     private int[][] tileMap;
+    private Canvas mapCanvas;
 
     private ArrayList<Room> rooms;
-    private DungeonTreeNode dungeontree;
+    private DungeonTreeNode dungeonTree;
 
     public DungeonMap(int width, int height, int level)
     {
@@ -20,15 +25,26 @@ public class DungeonMap
         mapLevel = level;
 
         tileMap = new int[mapWidth][mapHeight];
+        mapCanvas = new Canvas(mapWidth * TILE_WIDTH, mapHeight * TILE_WIDTH);
         
         rooms = new ArrayList<Room>();
-        dungeontree = null;
+        dungeonTree = null;
     }
-    
+
+    public int[][] getTileMap()
+    {
+        return tileMap;
+    }
+
+    public Canvas getMapCanvas()
+    {
+        return mapCanvas;
+    }
+
     private void binarySpacePartition()
     {
-        DungeonContainer mainContainer = new DungeonContainer(0, 0, mapWidth, mapHeight, null);
-        dungeontree = splitContainer(mainContainer, 3);
+        DungeonContainer mainContainer = new DungeonContainer(0, 0, mapWidth - 1, mapHeight - 1, null);
+        dungeonTree = splitContainer(mainContainer, 2);
     }
 
     private void placeRooms()
@@ -36,12 +52,15 @@ public class DungeonMap
         int minLevel = 1 + mapLevel / 2;
         int maxLevel = mapLevel + 1;
 
-        for (DungeonContainer dc : dungeontree.getLeaves())
+        for (DungeonContainer dc : dungeonTree.getLeaves())
         {
             Room temp = new MonsterRoom(dc, ExtraTools.randomRange(minLevel, maxLevel));
             dc.setRoom(temp);
             rooms.add(dc.getRoom());
-            
+
+            int xBound = temp.getX() + temp.getW();
+            int yBound = temp.getY() + temp.getH();
+
             for (int x = temp.getX(); x < temp.getX() + temp.getW(); x++)
             {
                 for (int y = temp.getY(); y < temp.getY() + temp.getH(); y++)
@@ -89,7 +108,7 @@ public class DungeonMap
         placeRooms();
         
         // IMPLEMENT HALLWAYS
-        placeHallways(dungeontree);
+        placeHallways(dungeonTree);
         
         // IMPLEMENT WALL PLACEMENT
         
@@ -99,9 +118,10 @@ public class DungeonMap
     public void initialize()
     {
         binarySpacePartition();
+        System.out.println("ACTUALLY FINISHED BSP LOL");
         initializeTileMap();
     }
-    
+
     private ArrayList<DungeonContainer> randomSplit(DungeonContainer c)
     {
         ArrayList<DungeonContainer> split = new ArrayList<DungeonContainer>();
@@ -112,22 +132,38 @@ public class DungeonMap
             cont1 = new DungeonContainer(c.getX(), c.getY(), ExtraTools.randomRange(1, c.getW()), c.getH(), null);
             cont2 = new DungeonContainer(c.getX() + cont1.getW(), c.getY(), c.getW() - cont1.getW(), c.getH(), null);
 
-            double cont1_w_ratio = cont1.getW() / cont1.getH();
-            double cont2_w_ratio = cont2.getW() / cont2.getH();
+            /**
+            double cont1_w_ratio = (double)cont1.getW() / cont1.getH();
+            double cont2_w_ratio = (double)cont2.getW() / cont2.getH();
 
-            if (cont1_w_ratio < W_DISCARD_RATIO || cont2_w_ratio < W_DISCARD_RATIO)
-                split = randomSplit(c);
+            while (cont1_w_ratio < W_DISCARD_RATIO || cont2_w_ratio < W_DISCARD_RATIO)
+            {
+                cont1 = new OLDAPPROACH.DungeonContainer(c.getX(), c.getY(), ExtraTools.randomRange(1, c.getW()), c.getH(), null);
+                cont2 = new OLDAPPROACH.DungeonContainer(c.getX() + cont1.getW(), c.getY(), c.getW() - cont1.getW(), c.getH(), null);
+
+                cont1_w_ratio = (double) cont1.getW() / cont1.getH();
+                cont2_w_ratio = (double) cont2.getW() / cont2.getH();
+            }
+             */
         }
         else
         {
             cont1 = new DungeonContainer(c.getX(), c.getY(), c.getW(), ExtraTools.randomRange(1, c.getH()), null);
             cont2 = new DungeonContainer(c.getX(), c.getY() + cont1.getH(), c.getW(), c.getH() - cont1.getH(), null);
 
+            /**
             double cont1_h_ratio = cont1.getH() / cont1.getW();
             double cont2_h_ratio = cont2.getH() / cont2.getW();
 
-            if (cont1_h_ratio < H_DISCARD_RATIO|| cont2_h_ratio < H_DISCARD_RATIO)
-                split = randomSplit(c);
+            while (cont1_h_ratio < H_DISCARD_RATIO|| cont2_h_ratio < H_DISCARD_RATIO)
+            {
+                cont1 = new OLDAPPROACH.DungeonContainer(c.getX(), c.getY(), c.getW(), ExtraTools.randomRange(1, c.getH()), null);
+                cont2 = new OLDAPPROACH.DungeonContainer(c.getX(), c.getY() + cont1.getH(), c.getW(), c.getH() - cont1.getH(), null);
+
+                cont1_h_ratio = cont1.getH() / cont1.getW();
+                cont2_h_ratio = cont2.getH() / cont2.getW();
+            }
+             */
         }
 
         split.add(cont1);

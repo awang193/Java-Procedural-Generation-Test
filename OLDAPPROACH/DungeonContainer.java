@@ -1,3 +1,5 @@
+package OLDAPPROACH;
+
 import java.awt.*;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -10,10 +12,10 @@ public class DungeonContainer
 
     public DungeonContainer(int xPos, int yPos, int wid, int hei, Room newRoom)
     {
-        int x = xPos;
-        int y = yPos;
-        int w = wid;
-        int h = hei;
+        x = xPos;
+        y = yPos;
+        w = wid;
+        h = hei;
 
         room = newRoom;
         center = new Point(x + w/2, y + h/2);

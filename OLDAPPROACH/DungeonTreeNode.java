@@ -1,5 +1,6 @@
+package OLDAPPROACH;
+
 import java.util.ArrayList;
-import apcslib.*;
 
 public class DungeonTreeNode
 {

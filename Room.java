@@ -1,3 +1,5 @@
+import OLDAPPROACH.DungeonContainer;
+
 import java.awt.Point;
 
 public abstract class Room
