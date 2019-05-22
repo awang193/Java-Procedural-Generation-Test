@@ -4,17 +4,17 @@ import java.util.Random;
 public class DungeonLeaf
 {
     private final int MIN_LEAF_SIZE = 5;
-    private int xPos, yPos, width, height;
+    private int x, y, width, height;
 
     private Room room;
     private ArrayList<Hallway> hallways = new ArrayList<Hallway>();
 
     private DungeonLeaf left, right;
 
-    public DungeonLeaf(int x, int y, int w, int h)
+    public DungeonLeaf(int xPos, int yPos, int w, int h)
     {
-        xPos = x;
-        yPos = y;
+        x = xPos;
+        y = yPos;
         width = w;
         height = h;
     }
@@ -51,12 +51,51 @@ public class DungeonLeaf
                 leaves.add(leaf);
         }
 
-
+        return leaves;
     }
 
     public boolean split()
     {
-        return true;
+        boolean flag = true;
+        
+        if (left != null || right != null)
+        {
+            flag = false;
+        }
+        else
+        {
+            boolean splitH = (Math.random() < 0.5);
+            
+            if (width > height && (double)width / height >= 1.25)
+                splitH = false;
+            
+            if (height > width && (double)height / width >= 1.25)
+                splitH = true;
+            
+            int maxDimension = (splitH ? height : width) - MIN_LEAF_SIZE;
+            
+            if (maxDimension <= MIN_LEAF_SIZE)
+            {
+                flag = false;
+            }
+            else
+            {
+                int split = ExtraTools.randomRange(MIN_LEAF_SIZE, maxDimension);
+                
+                if (splitH)
+                {
+                    left = new DungeonLeaf(x, y, width, split);
+                    right = new DungeonLeaf(x, y + split, width, height - split);
+                }
+                else
+                {
+                    left = new DungeonLeaf(x, y, split, height);
+                    right = new DungeonLeaf(x + split, y, width - split, height);
+                }
+            }
+        }
+        
+        return flag;
     }
 
 
@@ -64,3 +103,4 @@ public class DungeonLeaf
     {
 
     }
+}

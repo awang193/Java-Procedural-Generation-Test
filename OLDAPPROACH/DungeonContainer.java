@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class DungeonContainer
 {
+    /**
     private int x, y, w, h;
     private Room room;
     private Point center;
@@ -55,4 +56,5 @@ public class DungeonContainer
     {
         room = newRoom;
     }
+    */
 }

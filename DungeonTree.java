@@ -7,16 +7,20 @@ import java.util.ArrayList;
 
 public class DungeonTree
 {
-
+    private final int MAX_LEAF_SIZE = 10;
+    private final int DUNGEON_WIDTH = 30;
+    private final int DUNGEON_HEIGHT = 30;
+    
+    private ArrayList<DungeonLeaf> leaves;
 
     public DungeonTree()
     {
-        ArrayList<DungeonLeaf> leaves = new ArrayList<DungeonLeaf>();
-        leaves.add(new DungeonLeaf(0, 0, DUNGEON_LENGTH, DUNGEON_LENGTH));
+        leaves = new ArrayList<DungeonLeaf>();
+        leaves.add(new DungeonLeaf(0, 0, DUNGEON_WIDTH, DUNGEON_HEIGHT));
 
-        boolean hasSplit = true;
+        boolean hasSplit;
 
-        while (hasSplit)
+        do
         {
             hasSplit = false;
 
@@ -26,10 +30,10 @@ public class DungeonTree
 
                 if (leaf.getLeft() == null && leaf.getRight() == null)
                 {
-                    if ((leaf.getWidth() > MAX_LENGTH || leaf.getHeight() > MAX_LENGTH) &&
-                    leaf.split())
+                    if ((leaf.getWidth() > MAX_LEAF_SIZE || 
+                        leaf.getHeight() > MAX_LEAF_SIZE) &&
+                        leaf.split())
                     {
-
                         leaves.add(leaf.getLeft());
                         leaves.add(leaf.getRight());
                         hasSplit = true;
@@ -37,39 +41,6 @@ public class DungeonTree
                 }
             }
         }
-    }
-
-    public boolean split()
-    {
-
-        boolean ret = false;
-
-        if (left == null && right == null)
-        {
-            boolean splitH = (ExtraTools.randomRange(0, 1) == 1);
-
-            if ((double)width / height >= 1.25)
-                splitH = false;
-            if ((double)height / width >= 1.25)
-                splitH = true;
-
-            int maxLen = (splitH ? height : width) - MIN_LEAF_SIZE;
-            int splitOffset = MIN_LEAF_SIZE + (maxLen - MIN_LEAF_SIZE < 1 ? 0 : rand.nextInt(maxLen - MIN_LEAF_SIZE));
-
-            if (splitH)
-            {
-            left = new DungeonLeaf(xPos, yPos, width, splitOffset);
-            right = new DungeonLeaf(xPos, yPos + splitOffset, width, height - splitOffset);
-            }
-            else
-            {
-            left = new DungeonLeaf(xPos, yPos, splitOffset, height);
-            right = new DungeonLeaf(xPos + splitOffset, yPos, width - splitOffset, height);
-            }
-
-            ret = true;
-        }
-
-    return ret;
+        while (hasSplit);
     }
 }

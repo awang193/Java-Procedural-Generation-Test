@@ -5,8 +5,11 @@ import javafx.scene.canvas.Canvas;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class DungeonMap
+
+
+public class DungeonMap //extends DungeonMap
 {
+    /**
     private final double W_DISCARD_RATIO = 0.3;
     private final double H_DISCARD_RATIO = 0.3;
     private final int TILE_WIDTH = 32;
@@ -132,7 +135,7 @@ public class DungeonMap
             cont1 = new DungeonContainer(c.getX(), c.getY(), ExtraTools.randomRange(1, c.getW()), c.getH(), null);
             cont2 = new DungeonContainer(c.getX() + cont1.getW(), c.getY(), c.getW() - cont1.getW(), c.getH(), null);
 
-            /**
+            
             double cont1_w_ratio = (double)cont1.getW() / cont1.getH();
             double cont2_w_ratio = (double)cont2.getW() / cont2.getH();
 
@@ -144,14 +147,14 @@ public class DungeonMap
                 cont1_w_ratio = (double) cont1.getW() / cont1.getH();
                 cont2_w_ratio = (double) cont2.getW() / cont2.getH();
             }
-             */
+             
         }
         else
         {
             cont1 = new DungeonContainer(c.getX(), c.getY(), c.getW(), ExtraTools.randomRange(1, c.getH()), null);
             cont2 = new DungeonContainer(c.getX(), c.getY() + cont1.getH(), c.getW(), c.getH() - cont1.getH(), null);
 
-            /**
+            
             double cont1_h_ratio = cont1.getH() / cont1.getW();
             double cont2_h_ratio = cont2.getH() / cont2.getW();
 
@@ -163,7 +166,7 @@ public class DungeonMap
                 cont1_h_ratio = cont1.getH() / cont1.getW();
                 cont2_h_ratio = cont2.getH() / cont2.getW();
             }
-             */
+             
         }
 
         split.add(cont1);
@@ -185,4 +188,5 @@ public class DungeonMap
 
         return root;
     }
+    */
 }
