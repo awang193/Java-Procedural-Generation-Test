@@ -18,7 +18,7 @@ public class DungeonMap //extends DungeonMap
     private int[][] tileMap;
     private Canvas mapCanvas;
 
-    private ArrayList<Room> rooms;
+    private ArrayList<OLDAPPROACH.Room> rooms;
     private DungeonTreeNode dungeonTree;
 
     public DungeonMap(int width, int height, int level)
@@ -30,7 +30,7 @@ public class DungeonMap //extends DungeonMap
         tileMap = new int[mapWidth][mapHeight];
         mapCanvas = new Canvas(mapWidth * TILE_WIDTH, mapHeight * TILE_WIDTH);
         
-        rooms = new ArrayList<Room>();
+        rooms = new ArrayList<OLDAPPROACH.Room>();
         dungeonTree = null;
     }
 
@@ -57,7 +57,7 @@ public class DungeonMap //extends DungeonMap
 
         for (DungeonContainer dc : dungeonTree.getLeaves())
         {
-            Room temp = new MonsterRoom(dc, ExtraTools.randomRange(minLevel, maxLevel));
+            OLDAPPROACH.Room temp = new OLDAPPROACH.MonsterRoom(dc, ExtraTools.randomRange(minLevel, maxLevel));
             dc.setRoom(temp);
             rooms.add(dc.getRoom());
 

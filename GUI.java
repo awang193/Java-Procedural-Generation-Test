@@ -1,15 +1,13 @@
-import OLDAPPROACH.DungeonMap;
+import SUPEROLDAPPROACH.DungeonTree;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class GUI extends Application
 {
     @Override
-    public void start(Stage stage)
+    public void start(Stage stage) throws InterruptedException
     {
-        DungeonMap newMap = new DungeonMap(20, 20, 1);
-        newMap.initialize();
-
+        BSPTree tree = new BSPTree(50, 50, 3);
         System.gc();
         System.exit(0);
     }

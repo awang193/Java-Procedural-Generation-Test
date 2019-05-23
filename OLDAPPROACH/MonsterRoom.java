@@ -1,9 +1,13 @@
+package OLDAPPROACH;
+
 import OLDAPPROACH.DungeonContainer;
+import OLDAPPROACH.Room;
 
 import java.util.ArrayList;
 
 public class MonsterRoom extends Room
 {
+    /**
     private int numMonst;
     private ArrayList<Monster> monsters;
 
@@ -40,4 +44,5 @@ public class MonsterRoom extends Room
     {
         return monsters.isEmpty();
     }
+     */
 }

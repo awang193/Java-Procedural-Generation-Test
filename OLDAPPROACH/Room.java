@@ -1,9 +1,12 @@
+package OLDAPPROACH;
+
 import OLDAPPROACH.DungeonContainer;
 
 import java.awt.Point;
 
 public abstract class Room
 {
+    /**
     protected int x, y, w, h;
     protected int roomLevel;
     protected Point center;
@@ -46,4 +49,5 @@ public abstract class Room
     {
         return center;
     }
+     */
 }

@@ -4,4 +4,9 @@ public class ExtraTools
     {
         return (int)(Math.random() * (higher - lower + 1)) + lower;
     }
+
+    public static boolean randomBoolean()
+    {
+        return (Math.random() < 0.5);
+    }
 }

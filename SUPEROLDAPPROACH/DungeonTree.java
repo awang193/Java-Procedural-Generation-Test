@@ -1,4 +1,7 @@
+package SUPEROLDAPPROACH;
+
 import java.util.ArrayList;
+import apcslib.Format;
 
 /**
  * https://gamedevelopment.tutsplus.com/tutorials/how-to-use-bsp-trees-to-generate-game-maps--gamedev-12268
@@ -7,11 +10,14 @@ import java.util.ArrayList;
 
 public class DungeonTree
 {
+    /**
     private final int MAX_LEAF_SIZE = 10;
     private final int DUNGEON_WIDTH = 30;
     private final int DUNGEON_HEIGHT = 30;
     
     private ArrayList<DungeonLeaf> leaves;
+
+    int[][] map = new int[DUNGEON_WIDTH][DUNGEON_HEIGHT];
 
     public DungeonTree()
     {
@@ -43,4 +49,46 @@ public class DungeonTree
         }
         while (hasSplit);
     }
+
+    public void updateMap() throws InterruptedException
+    {
+        int num = 1;
+
+        for (DungeonLeaf leaf : leaves)
+        {
+            for (int r = 0; r < leaf.getHeight(); r++)
+            {
+                for (int c = 0; c < leaf.getWidth(); c++)
+                {
+                    map[r][c] = num;
+                }
+            }
+
+            num++;
+
+            drawMap();
+            try
+            {
+                Thread.sleep(3000);
+                System.out.print("\n\n\n\n\n");
+            }
+            catch (Exception e)
+            {
+                continue;
+            }
+        }
+    }
+
+    public void drawMap()
+    {
+        for (int r = 0; r < map.length; r++)
+        {
+            for (int c = 0; c < map[r].length; c++)
+            {
+                System.out.print(Format.left(map[r][c], 4));
+            }
+            System.out.println();
+        }
+    }
+     */
 }

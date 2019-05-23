@@ -1,12 +1,15 @@
+package OLDAPPROACH;
+
 import OLDAPPROACH.DungeonMap;
 import javafx.scene.canvas.GraphicsContext;
 
 public class DungeonPainter
 {
+    /**
     private DungeonMap map;
     private GraphicsContext graphicsContext;
 
-    public DungeonPainter(DungeonMap newMap)
+    public OLDAPPROACH.DungeonPainter(DungeonMap newMap)
     {
         map = newMap;
         graphicsContext = map.getMapCanvas().getGraphicsContext2D();
@@ -42,4 +45,5 @@ public class DungeonPainter
     {
 
     }
+     */
 }

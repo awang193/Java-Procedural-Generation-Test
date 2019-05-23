@@ -1,7 +1,7 @@
-public DungeonTree()
+public SUPEROLDAPPROACH.DungeonTree()
 {
-    leaves = new ArrayList<DungeonLeaf>();
-    leaves.add(new DungeonLeaf(0, 0, DUNGEON_LENGTH, DUNGEON_LENGTH));
+    leaves = new ArrayList<SUPEROLDAPPROACH.DungeonLeaf>();
+    leaves.add(new SUPEROLDAPPROACH.DungeonLeaf(0, 0, DUNGEON_LENGTH, DUNGEON_LENGTH));
 
     boolean hasSplit = true;
 
@@ -11,7 +11,7 @@ public DungeonTree()
 
         for (int i = 0; i < leaves.size(); i++)
         {
-            DungeonLeaf leaf = leaves.get(i);
+            SUPEROLDAPPROACH.DungeonLeaf leaf = leaves.get(i);
 
             if (leaf.getLeft() == null && leaf.getRight() == null)
             {
@@ -47,13 +47,13 @@ public boolean split()
 
         if (splitH)
         {
-            left = new DungeonLeaf(xPos, yPos, width, splitOffset);
-            right = new DungeonLeaf(xPos, yPos + splitOffset, width, height - splitOffset);
+            left = new SUPEROLDAPPROACH.DungeonLeaf(xPos, yPos, width, splitOffset);
+            right = new SUPEROLDAPPROACH.DungeonLeaf(xPos, yPos + splitOffset, width, height - splitOffset);
         }
         else
         {
-            left = new DungeonLeaf(xPos, yPos, splitOffset, height);
-            right = new DungeonLeaf(xPos + splitOffset, yPos, width - splitOffset, height);
+            left = new SUPEROLDAPPROACH.DungeonLeaf(xPos, yPos, splitOffset, height);
+            right = new SUPEROLDAPPROACH.DungeonLeaf(xPos + splitOffset, yPos, width - splitOffset, height);
         }
 
         ret = true;
@@ -69,7 +69,7 @@ public void updateMap()
 {
     int num = 1;
 
-    for (DungeonLeaf leaf : leaves)
+    for (SUPEROLDAPPROACH.DungeonLeaf leaf : leaves)
     {
         for (int r = 0; r < leaf.getHeight(); r++)
         {d
@@ -101,17 +101,17 @@ public void drawMap()
 import java.util.ArrayList;
 import java.util.Random;
 
-public class DungeonLeaf
+public class SUPEROLDAPPROACH.DungeonLeaf
 {
     private final int MIN_LEAF_SIZE = 5;
     private int xPos, yPos, width, height;
 
-    private Room room;
-    private ArrayList<Hallway> hallways = new ArrayList<Hallway>();
+    private OLDAPPROACH.Room room;
+    private ArrayList<SUPEROLDAPPROACH.Hallway> hallways = new ArrayList<SUPEROLDAPPROACH.Hallway>();
 
-    private DungeonLeaf left, right;
+    private SUPEROLDAPPROACH.DungeonLeaf left, right;
 
-    public DungeonLeaf(int x, int y, int w, int h)
+    public SUPEROLDAPPROACH.DungeonLeaf(int x, int y, int w, int h)
     {
         xPos = x;
         yPos = y;
@@ -119,12 +119,12 @@ public class DungeonLeaf
         height = h;
     }
 
-    public DungeonLeaf getLeft()
+    public SUPEROLDAPPROACH.DungeonLeaf getLeft()
     {
         return left;
     }
 
-    public DungeonLeaf getRight()
+    public SUPEROLDAPPROACH.DungeonLeaf getRight()
     {
         return right;
     }
@@ -139,15 +139,15 @@ public class DungeonLeaf
         return height;
     }
 
-    public ArrayList<DungeonLeaf> getLeaves()
+    public ArrayList<SUPEROLDAPPROACH.DungeonLeaf> getLeaves()
     {
-        ArrayList<DungeonLeaf> leaves = new ArrayList<DungeonLeaf>();
+        ArrayList<SUPEROLDAPPROACH.DungeonLeaf> leaves = new ArrayList<SUPEROLDAPPROACH.DungeonLeaf>();
 
         if (left != null && right != null)
         {
-            for (DungeonLeaf leaf : left.getLeaves())
+            for (SUPEROLDAPPROACH.DungeonLeaf leaf : left.getLeaves())
                 leaves.add(leaf);
-            for (DungeonLeaf leaf : right.getLeaves())
+            for (SUPEROLDAPPROACH.DungeonLeaf leaf : right.getLeaves())
                 leaves.add(leaf);
         }
 

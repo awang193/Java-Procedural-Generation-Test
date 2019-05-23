@@ -8,10 +8,10 @@ public class DungeonContainer
 {
     /**
     private int x, y, w, h;
-    private Room room;
+    private OLDAPPROACH.Room room;
     private Point center;
 
-    public DungeonContainer(int xPos, int yPos, int wid, int hei, Room newRoom)
+    public DungeonContainer(int xPos, int yPos, int wid, int hei, OLDAPPROACH.Room newRoom)
     {
         x = xPos;
         y = yPos;
@@ -47,12 +47,12 @@ public class DungeonContainer
         return center;
     }
 
-    public Room getRoom()
+    public OLDAPPROACH.Room getRoom()
     {
         return room;
     }
 
-    public void setRoom(Room newRoom)
+    public void setRoom(OLDAPPROACH.Room newRoom)
     {
         room = newRoom;
     }
