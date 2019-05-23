@@ -1,6 +1,5 @@
 package SUPEROLDAPPROACH;
 
-import javafx.geometry.Point2D;
 
 public class DungeonRoom
 {

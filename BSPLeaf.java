@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class BSPLeaf
 {
     private final int MIN_LEAF_SIZE = 5;
@@ -35,6 +37,16 @@ public class BSPLeaf
         return h;
     }
 
+    public BSPLeaf getLeft()
+    {
+        return left;
+    }
+
+    public BSPLeaf getRight()
+    {
+        return right;
+    }
+
     public void split(int recur)
     {
         BSPLeaf l, r;
@@ -60,7 +72,7 @@ public class BSPLeaf
                 l = new BSPLeaf(x, y, w, splitOffset);
                 r = new BSPLeaf(x, y + splitOffset, w, h - splitOffset);
 
-                /**
+
                 while ((double)l.getH() / l.getW() < H_DISCARD_RATIO ||
                        (double)r.getH() / r.getW() < H_DISCARD_RATIO)
                 {
@@ -69,7 +81,6 @@ public class BSPLeaf
                     l = new BSPLeaf(x, y, w, splitOffset);
                     r = new BSPLeaf(x, y + splitOffset, w, h - splitOffset);
                 }
-                 */
             }
             else
             {
@@ -78,7 +89,6 @@ public class BSPLeaf
                 l = new BSPLeaf(x, y, splitOffset, h);
                 r = new BSPLeaf(x + splitOffset, y, w - splitOffset, h);
 
-                /**
                 while ((double)l.getW() / l.getH() < V_DISCARD_RATIO ||
                        (double)r.getW() / r.getH() < V_DISCARD_RATIO)
                 {
@@ -87,7 +97,6 @@ public class BSPLeaf
                     l = new BSPLeaf(x, y, splitOffset, h);
                     r = new BSPLeaf(x + splitOffset, y, w - splitOffset, h);
                 }
-                 */
             }
 
 
@@ -99,5 +108,23 @@ public class BSPLeaf
         }
     }
 
+    public ArrayList<BSPLeaf> getLeaves()
+    {
+        ArrayList<BSPLeaf> leaves = new ArrayList<>();
 
+        if (left != null || right != null)
+        {
+            if (left != null)
+                leaves.addAll(left.getLeaves());
+
+            if (right != null)
+                leaves.addAll(right.getLeaves());
+        }
+        else
+        {
+            leaves.add(this);
+        }
+
+        return leaves;
+    }
 }

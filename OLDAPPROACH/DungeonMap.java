@@ -1,7 +1,5 @@
 package OLDAPPROACH;
 
-import javafx.scene.canvas.Canvas;
-
 import java.awt.*;
 import java.util.ArrayList;
 

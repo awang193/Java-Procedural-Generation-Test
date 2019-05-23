@@ -1,7 +1,6 @@
 package OLDAPPROACH;
 
 import OLDAPPROACH.DungeonMap;
-import javafx.scene.canvas.GraphicsContext;
 
 public class DungeonPainter
 {
