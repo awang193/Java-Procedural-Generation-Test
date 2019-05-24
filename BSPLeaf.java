@@ -2,13 +2,14 @@ import java.util.ArrayList;
 
 public class BSPLeaf
 {
-    private final int MIN_LEAF_SIZE = 10;
-    private final int MAX_LEAF_SIZE = 20;
+    private final int MIN_LEAF_SIZE = 20;
+    private final int MAX_LEAF_SIZE = 35;
     private final double H_DISCARD_RATIO = 0.3;
     private final double V_DISCARD_RATIO = 0.3;
 
     private BSPLeaf left, right;
-    int x, y, w, h;
+    private Room room;
+    private int x, y, w, h;
 
     public BSPLeaf(int x, int y, int w, int h)
     {
@@ -16,6 +17,16 @@ public class BSPLeaf
         this.y = y;
         this.w = w;
         this.h = h;
+    }
+
+    public BSPLeaf(int x, int y, int w, int h, Room r)
+    {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+
+        this.room = r;
     }
 
     public int getX()
@@ -48,6 +59,11 @@ public class BSPLeaf
         return right;
     }
 
+    public Room getRoom()
+    {
+        return room;
+    }
+
     public void setX(int x)
     {
         this.x = x;
@@ -68,6 +84,20 @@ public class BSPLeaf
         this.h = h;
     }
 
+    public void setLeft(BSPLeaf newLeft)
+    {
+        left = newLeft;
+    }
+
+    public void setRight(BSPLeaf newRight)
+    {
+        right = newRight;
+    }
+
+    public void setRoom(Room r)
+    {
+        room = r;
+    }
 
     public void split()
     {
