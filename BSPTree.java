@@ -1,3 +1,5 @@
+import apcslib.Format;
+
 import java.util.ArrayList;
 
 public class BSPTree
@@ -8,12 +10,12 @@ public class BSPTree
 
     private int[][] tileMap;
 
-    public BSPTree(int width, int height, int recur)
+    public BSPTree(int width, int height)
     {
         dungeonWidth = width;
         dungeonHeight = height;
         root = new BSPLeaf(0, 0, width, height);
-        root.split(recur);
+        root.split();
 
         tileMap = new int[height][width];
     }
@@ -44,7 +46,7 @@ public class BSPTree
         {
             for (int c = 0; c < tileMap[r].length; c++)
             {
-                System.out.print(tileMap[r][c] + "  ");
+                System.out.print(Format.left(tileMap[r][c], 4));
             }
             System.out.println();
         }

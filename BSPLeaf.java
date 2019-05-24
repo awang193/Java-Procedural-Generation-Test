@@ -2,7 +2,8 @@ import java.util.ArrayList;
 
 public class BSPLeaf
 {
-    private final int MIN_LEAF_SIZE = 5;
+    private final int MIN_LEAF_SIZE = 10;
+    private final int MAX_LEAF_SIZE = 20;
     private final double H_DISCARD_RATIO = 0.3;
     private final double V_DISCARD_RATIO = 0.3;
 
@@ -47,7 +48,27 @@ public class BSPLeaf
         return right;
     }
 
-    public void split(int recur)
+    public void setX(int x)
+    {
+        this.x = x;
+    }
+
+    public void setY(int y)
+    {
+        this.y = y;
+    }
+
+    public void setW(int w)
+    {
+        this.w = w;
+    }
+
+    public void setH(int h)
+    {
+        this.h = h;
+    }
+
+    public void limitsplit(int recur)
     {
         BSPLeaf l, r;
         int splitOffset;
@@ -63,48 +84,157 @@ public class BSPLeaf
             if (h / w >= 1.25)
                 splitH = true;
 
-
-
             if (splitH)
             {
-                splitOffset = ExtraTools.randomRange(y, y + h);
+                int oldy = y;
+                int oldh = h;
+
+                splitOffset = ExtraTools.randomRange(MIN_LEAF_SIZE, oldh - MIN_LEAF_SIZE);
 
                 l = new BSPLeaf(x, y, w, splitOffset);
                 r = new BSPLeaf(x, y + splitOffset, w, h - splitOffset);
 
 
+                /**
                 while ((double)l.getH() / l.getW() < H_DISCARD_RATIO ||
                        (double)r.getH() / r.getW() < H_DISCARD_RATIO)
                 {
-                    splitOffset = ExtraTools.randomRange(y, y + h);
+                    System.out.println(recur + ": horizontal split discard || L: " + l.getW() + " " + l.getH() + " || R: " + r.getW() + " " + r.getH());
 
-                    l = new BSPLeaf(x, y, w, splitOffset);
-                    r = new BSPLeaf(x, y + splitOffset, w, h - splitOffset);
+                    splitOffset = ExtraTools.randomRange(MIN_LEAF_SIZE, oldh - MIN_LEAF_SIZE);
+
+                    l.setH(splitOffset);
+                    r.setY(oldy + splitOffset);
+                    r.setH(oldh - splitOffset);
                 }
+                 */
             }
             else
             {
-                splitOffset = ExtraTools.randomRange(x, x + w);
+                int oldx = x;
+                int oldw = w;
+
+                splitOffset = ExtraTools.randomRange(MIN_LEAF_SIZE, oldw - MIN_LEAF_SIZE);
 
                 l = new BSPLeaf(x, y, splitOffset, h);
                 r = new BSPLeaf(x + splitOffset, y, w - splitOffset, h);
 
+                /**
                 while ((double)l.getW() / l.getH() < V_DISCARD_RATIO ||
                        (double)r.getW() / r.getH() < V_DISCARD_RATIO)
                 {
-                    splitOffset = ExtraTools.randomRange(x, x + w);
+                    System.out.println(recur + ": vertical split discard || L: " + l.getW() + " " + l.getH() + " || R: " + r.getW() + " " + r.getH());
 
-                    l = new BSPLeaf(x, y, splitOffset, h);
-                    r = new BSPLeaf(x + splitOffset, y, w - splitOffset, h);
+                    splitOffset = ExtraTools.randomRange(MIN_LEAF_SIZE, oldw - MIN_LEAF_SIZE);
+
+                    l.setW(splitOffset);
+                    r.setX(oldx + splitOffset);
+                    r.setW(oldw - splitOffset);
                 }
+                 */
             }
-
 
             left = l;
             right = r;
 
-            left.split(recur - 1);
-            right.split(recur - 1);
+            left.limitsplit(recur - 1);
+            right.limitsplit(recur - 1);
+        }
+    }
+
+    public void split()
+    {
+        BSPLeaf l, r;
+        int splitOffset;
+        boolean splitH;
+
+        if (this.w > MAX_LEAF_SIZE || this.h > MAX_LEAF_SIZE)
+        {
+            splitH = ExtraTools.randomBoolean();
+
+            if (w / h >= 1.25)
+                splitH = false;
+
+            if (h / w >= 1.25)
+                splitH = true;
+
+            if (splitH)
+            {
+                int oldy = y;
+                int oldh = h;
+
+                splitOffset = ExtraTools.randomRange(MIN_LEAF_SIZE, oldh - MIN_LEAF_SIZE);
+
+                l = new BSPLeaf(x, y, w, splitOffset);
+                r = new BSPLeaf(x, y + splitOffset, w, h - splitOffset);
+
+                if (h >= 2 * MIN_LEAF_SIZE)
+                {
+                    while (splitOffset < MIN_LEAF_SIZE && h - splitOffset < MIN_LEAF_SIZE)
+                    {
+                        splitOffset = ExtraTools.randomRange(MIN_LEAF_SIZE, oldh - MIN_LEAF_SIZE);
+
+                        l = new BSPLeaf(x, y, w, splitOffset);
+                        r = new BSPLeaf(x, y + splitOffset, w, h - splitOffset);
+                    }
+                }
+
+
+                /**
+                 while ((double)l.getH() / l.getW() < H_DISCARD_RATIO ||
+                 (double)r.getH() / r.getW() < H_DISCARD_RATIO)
+                 {
+                 System.out.println(recur + ": horizontal split discard || L: " + l.getW() + " " + l.getH() + " || R: " + r.getW() + " " + r.getH());
+
+                 splitOffset = ExtraTools.randomRange(MIN_LEAF_SIZE, oldh - MIN_LEAF_SIZE);
+
+                 l.setH(splitOffset);
+                 r.setY(oldy + splitOffset);
+                 r.setH(oldh - splitOffset);
+                 }
+                 */
+            }
+            else
+            {
+                int oldx = x;
+                int oldw = w;
+
+                splitOffset = ExtraTools.randomRange(MIN_LEAF_SIZE, oldw - MIN_LEAF_SIZE);
+
+                l = new BSPLeaf(x, y, splitOffset, h);
+                r = new BSPLeaf(x + splitOffset, y, w - splitOffset, h);
+
+                if (w >= 2 * MIN_LEAF_SIZE)
+                {
+                    while (splitOffset < MIN_LEAF_SIZE && w - splitOffset < MIN_LEAF_SIZE)
+                    {
+                        splitOffset = ExtraTools.randomRange(MIN_LEAF_SIZE, oldw - MIN_LEAF_SIZE);
+
+                        l = new BSPLeaf(x, y, splitOffset, h);
+                        r = new BSPLeaf(x + splitOffset, y, w - splitOffset, h);
+                    }
+                }
+
+                /**
+                 while ((double)l.getW() / l.getH() < V_DISCARD_RATIO ||
+                 (double)r.getW() / r.getH() < V_DISCARD_RATIO)
+                 {
+                 System.out.println(recur + ": vertical split discard || L: " + l.getW() + " " + l.getH() + " || R: " + r.getW() + " " + r.getH());
+
+                 splitOffset = ExtraTools.randomRange(MIN_LEAF_SIZE, oldw - MIN_LEAF_SIZE);
+
+                 l.setW(splitOffset);
+                 r.setX(oldx + splitOffset);
+                 r.setW(oldw - splitOffset);
+                 }
+                 */
+            }
+
+            left = l;
+            right = r;
+
+            left.split();
+            right.split();
         }
     }
 
