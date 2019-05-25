@@ -1,11 +1,67 @@
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
-
-public class GUI
+public class GUI extends Application
 {
+    private static final int TILE_WIDTH = 16;
+
+    public static Canvas drawDungeon(BSPTree tree)
+    {
+
+        int x = 0;
+        int y = 0;
+
+        Canvas cnv = new Canvas(tree.getDungeonWidth() * TILE_WIDTH, tree.getDungeonHeight() * TILE_WIDTH);
+        GraphicsContext gc = cnv.getGraphicsContext2D();
+
+        int[][] map = tree.getTileMap();
+
+        for (int r = 0; r < map.length; r++)
+        {
+            for (int c = 0; c < map[r].length; c++)
+            {
+                switch (map[r][c])
+                {
+                    case -1:
+                        gc.setFill(Color.BLUE);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+                    case -2:
+                        gc.setFill(Color.RED);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+                }
+                x += TILE_WIDTH;
+            }
+            x = 0;
+            y += TILE_WIDTH;
+        }
+
+        return cnv;
+    }
+
+    @Override
+    public void start(Stage stage)
+    {
+        BSPTree tree = new BSPTree(100, 100);
+        tree.loadMap(true);
+
+        int x = 0;
+        int y = 0;
+
+        Group g = new Group(drawDungeon(tree));
+
+        stage.setScene(new Scene(g));
+        stage.show();
+    }
+
     public static void main(String[] args)
     {
-        BSPTree tree = new BSPTree(100, 50);
-        tree.loadMap();
-        tree.drawRooms();
+        launch(args);
     }
 }

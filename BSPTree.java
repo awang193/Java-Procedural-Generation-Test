@@ -1,5 +1,6 @@
 import apcslib.Format;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class BSPTree
@@ -20,17 +21,89 @@ public class BSPTree
         tileMap = new int[height][width];
     }
 
+    public int getDungeonWidth()
+    {
+        return dungeonWidth;
+    }
+
+    public int getDungeonHeight()
+    {
+        return dungeonHeight;
+    }
+
     public int[][] getTileMap()
     {
         return tileMap;
     }
 
-    public void drawRooms()
+    public void loadMap(boolean debug)
+    {
+        numberLeaves();
+        placeHallways(root);
+        placeRooms();
+
+        if (debug)
+        {
+            for (int r = 0; r < tileMap.length; r++)
+            {
+                for (int c = 0; c < tileMap[r].length; c++)
+                {
+                    System.out.print(Format.left(tileMap[r][c], 4));
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    private void numberLeaves()
+    {
+        int id = 1;
+
+        for (BSPLeaf leaf : root.getLeaves())
+        {
+            for (int r = leaf.getY(); r < leaf.getY() + leaf.getH(); r++)
+            {
+                for (int c = leaf.getX(); c < leaf.getX() + leaf.getW(); c++)
+                {
+                    tileMap[r][c] = id;
+                }
+            }
+            id++;
+        }
+    }
+
+    private void placeHallways(BSPLeaf leaf)
+    {
+        if (leaf.getLeft() != null && leaf.getRight() != null)
+        {
+            Point leftCenter = leaf.getLeft().getCenter(), rightCenter = leaf.getRight().getCenter();
+
+            int lCenterX = (int)leftCenter.getX();
+            int lCenterY = (int)leftCenter.getY();
+            int rCenterX = (int)rightCenter.getX();
+            int rCenterY = (int)rightCenter.getY();
+
+            if (lCenterX == rCenterX)
+            {
+                for (int y = lCenterY; y < rCenterY; y++)
+                    tileMap[lCenterX][y] = -2;
+            }
+            else
+            {
+                for (int x = lCenterX; x < rCenterX; x++)
+                    tileMap[x][lCenterY] = -2;
+            }
+
+            placeHallways(leaf.getLeft());
+            placeHallways(leaf.getRight());
+        }
+    }
+
+    private void placeRooms()
     {
         for (BSPLeaf leaf : root.getLeaves())
         {
             Room temp = new MonsterRoom(leaf, 5);
-
             leaf.setRoom(temp);
 
             for (int r = temp.getY(); r < temp.getY() + temp.getH(); r++)
@@ -41,32 +114,16 @@ public class BSPTree
                 }
             }
         }
-
-
-        for (int r = 0; r < tileMap.length; r++)
-        {
-            for (int c = 0; c < tileMap[r].length; c++)
-            {
-                System.out.print(Format.left(tileMap[r][c], 4));
-            }
-            System.out.println();
-        }
     }
 
-    public void loadMap()
+    public void checkTooSmall()
     {
-        int room = 1;
-
         for (BSPLeaf leaf : root.getLeaves())
         {
-            for (int r = leaf.getY(); r < leaf.getY() + leaf.getH(); r++)
+            if (leaf.getH() < 15 || leaf.getW() < 15)
             {
-                for (int c = leaf.getX(); c < leaf.getX() + leaf.getW(); c++)
-                {
-                    tileMap[r][c] = room;
-                }
+                System.out.println("Gen failed.");
             }
-            room++;
         }
     }
 }
