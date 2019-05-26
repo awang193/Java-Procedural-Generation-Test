@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 public class GUI extends Application
 {
-    private static final int TILE_WIDTH = 16;
+    private static final int TILE_WIDTH = 8;
 
     public static Canvas drawDungeon(BSPTree tree)
     {
@@ -35,6 +35,11 @@ public class GUI extends Application
                         gc.setFill(Color.RED);
                         gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
                         break;
+                    case -3:
+                        gc.setFill(Color.GREEN);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+
                 }
                 x += TILE_WIDTH;
             }

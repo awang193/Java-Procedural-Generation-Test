@@ -57,18 +57,23 @@ public class BSPTree
 
     private void numberLeaves()
     {
-        int id = 1;
+        int id = -3;
 
         for (BSPLeaf leaf : root.getLeaves())
         {
             for (int r = leaf.getY(); r < leaf.getY() + leaf.getH(); r++)
             {
-                for (int c = leaf.getX(); c < leaf.getX() + leaf.getW(); c++)
+                if (r == leaf.getY() || r == leaf.getY() + leaf.getH() - 1)
                 {
-                    tileMap[r][c] = id;
+                    for (int c = leaf.getX(); c < leaf.getX() + leaf.getW(); c++)
+                        tileMap[r][c] = id;
+                }
+                else
+                {
+                    tileMap[r][0] = id;
+                    tileMap[r][leaf.getX() + leaf.getW() - 1] = id;
                 }
             }
-            id++;
         }
     }
 
@@ -86,12 +91,12 @@ public class BSPTree
             if (lCenterX == rCenterX)
             {
                 for (int y = lCenterY; y < rCenterY; y++)
-                    tileMap[lCenterX][y] = -2;
+                    tileMap[y][lCenterX] = -2;
             }
             else
             {
                 for (int x = lCenterX; x < rCenterX; x++)
-                    tileMap[x][lCenterY] = -2;
+                    tileMap[lCenterY][x] = -2;
             }
 
             placeHallways(leaf.getLeft());
