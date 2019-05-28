@@ -53,7 +53,7 @@ public class ExtraTools
 
         int maxConsec = 0;
 
-        for (int i = low; i < high; i++)
+        for (int i = low; i <= high; i++)
         {
             if (direction == 'N' || direction == 'S')
             {
