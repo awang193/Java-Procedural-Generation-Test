@@ -8,7 +8,24 @@ import javafx.stage.Stage;
 
 public class GUI extends Application
 {
-    private static final int TILE_WIDTH = 8;
+    private static final int TILE_WIDTH = 6;
+
+    @Override
+    public void start(Stage stage)
+    {
+        BSPTree tree = new BSPTree(100, 100);
+        tree.loadMap(true);
+
+        Group g = new Group(drawDungeon(tree));
+
+        stage.setScene(new Scene(g));
+        stage.show();
+    }
+
+    public static void main(String[] args)
+    {
+        launch(args);
+    }
 
     public static Canvas drawDungeon(BSPTree tree)
     {
@@ -32,11 +49,19 @@ public class GUI extends Application
                         gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
                         break;
                     case -2:
-                        gc.setFill(Color.RED);
+                        gc.setFill(Color.BLACK);
                         gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
                         break;
                     case -3:
-                        gc.setFill(Color.GREEN);
+                        gc.setFill(Color.LIGHTBLUE);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+                    case -4:
+                        gc.setFill(Color.RED);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+                    case -10:
+                        gc.setFill(Color.GRAY);
                         gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
                         break;
 
@@ -48,25 +73,5 @@ public class GUI extends Application
         }
 
         return cnv;
-    }
-
-    @Override
-    public void start(Stage stage)
-    {
-        BSPTree tree = new BSPTree(100, 100);
-        tree.loadMap(true);
-
-        int x = 0;
-        int y = 0;
-
-        Group g = new Group(drawDungeon(tree));
-
-        stage.setScene(new Scene(g));
-        stage.show();
-    }
-
-    public static void main(String[] args)
-    {
-        launch(args);
     }
 }

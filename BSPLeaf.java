@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class BSPLeaf
 {
-    private final int MIN_LEAF_SIZE = 15;
-    private final int MAX_LEAF_SIZE = 30;
+    private final int MIN_LEAF_SIZE = 25;
+    private final int MAX_LEAF_SIZE = 40;
     private final double H_DISCARD_RATIO = 0.3;
     private final double V_DISCARD_RATIO = 0.3;
 
@@ -182,6 +182,4 @@ public class BSPLeaf
 
         return leaves;
     }
-
-
 }

@@ -1,3 +1,75 @@
+// oldadjust
+public void adjustMap(int hallwayWidth)
+    {
+        int repeat = hallwayWidth + 10;
+
+        while (repeat > 0)
+        {
+            for (BSPLeaf leaf : root.getLeaves())
+            {
+                Room temp = leaf.getRoom();
+
+                int consecDoor = 0;
+
+                // Check top wall
+                for (int x = temp.getX() - 1; x < temp.getX() + temp.getW() + 1; x++)
+                {
+                    if (tileMap[temp.getY() - 1][x] == -2)
+                    {
+                        while (x < temp.getX() + temp.getW() && tileMap[temp.getY() - 1][x + 1] == -2)
+                            consecDoor++;
+
+                        if ()
+                    }
+                }
+
+                if (consecDoor > hallwayWidth)
+                    temp.setY(temp.getY() + 1);
+
+
+                // Check bottom wall
+                consecDoor = 0;
+
+                for (int x = temp.getX() - 1; x < temp.getX() + temp.getW() + 1; x++)
+                {
+                    if (tileMap[temp.getY() + temp.getH()][x] == -2)
+                        consecDoor++;
+                }
+
+                if (consecDoor > hallwayWidth)
+                    temp.setY(temp.getY() - 1);
+
+                // Check left wall
+                consecDoor = 0;
+
+                for (int y = temp.getY() - 1; y < temp.getY() + temp.getH() + 1; y++)
+                {
+                    if (tileMap[y][temp.getX() - 1] == -2);
+                    consecDoor ++;
+                }
+
+                if (consecDoor > hallwayWidth)
+                    temp.setX(temp.getX() - 1);
+
+                // Check right wall
+                consecDoor = 0;
+
+                for (int y = temp.getY() - 1; y < temp.getY() + temp.getH() + 1; y++)
+                {
+                    if (tileMap[y][temp.getX() + temp.getW() + 1] == -2);
+                    consecDoor ++;
+                }
+
+                if (consecDoor > hallwayWidth)
+                    temp.setX(temp.getX() + 1);
+            }
+
+            repeat -= 1;
+        }
+    }
+
+
+
 // limitsplit
 
 public void limitsplit(int recur)

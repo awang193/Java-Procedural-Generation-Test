@@ -2,7 +2,7 @@ import java.awt.*;
 
 public abstract class Room
 {
-    private final int PADDING = 2;
+    private final int PADDING = 1;
 
     private int x, y, w, h;
     private Point center;
@@ -14,13 +14,13 @@ public abstract class Room
         int leafW = leaf.getW();
         int leafH = leaf.getH();
 
-        x = leafX + ExtraTools.randomRange(PADDING, leafW / 4);
-        y = leafY + ExtraTools.randomRange(PADDING, leafH / 4);
+        x = leafX + ExtraTools.randomRange(PADDING, leafW / 6);
+        y = leafY + ExtraTools.randomRange(PADDING, leafH / 6);
         w = leafW - (this.x - leafX) - PADDING;
         h = leafH - (this.y - leafY) - PADDING;
 
-        w -= ExtraTools.randomRange(PADDING, this.w / 4);
-        h -= ExtraTools.randomRange(PADDING, this.h / 4);
+        w -= ExtraTools.randomRange(PADDING, this.w / 5);
+        h -= ExtraTools.randomRange(PADDING, this.h / 5);
 
         center = new Point(x + w/2, y + h/2);
     }

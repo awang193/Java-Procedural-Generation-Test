@@ -38,43 +38,21 @@ public class BSPTree
 
     public void loadMap(boolean debug)
     {
-        numberLeaves();
         placeHallways(root);
         placeRooms();
 
         if (debug)
         {
-            for (int r = 0; r < tileMap.length; r++)
-            {
-                for (int c = 0; c < tileMap[r].length; c++)
-                {
-                    System.out.print(Format.left(tileMap[r][c], 4));
-                }
-                System.out.println();
-            }
-        }
-    }
+            for (int i = 0; i < 10000; i++)
+                checkTooSmall();
 
-    private void numberLeaves()
-    {
-        int id = -3;
-
-        for (BSPLeaf leaf : root.getLeaves())
-        {
-            for (int r = leaf.getY(); r < leaf.getY() + leaf.getH(); r++)
-            {
-                if (r == leaf.getY() || r == leaf.getY() + leaf.getH() - 1)
-                {
-                    for (int c = leaf.getX(); c < leaf.getX() + leaf.getW(); c++)
-                        tileMap[r][c] = id;
-                }
-                else
-                {
-                    tileMap[r][0] = id;
-                    tileMap[r][leaf.getX() + leaf.getW() - 1] = id;
-                }
-            }
+            //loadLeafBorders();
+            printMap();
         }
+
+        adjustMap(3);
+        placeWalls();
+
     }
 
     private void placeHallways(BSPLeaf leaf)
@@ -83,21 +61,12 @@ public class BSPTree
         {
             Point leftCenter = leaf.getLeft().getCenter(), rightCenter = leaf.getRight().getCenter();
 
-            int lCenterX = (int)leftCenter.getX();
-            int lCenterY = (int)leftCenter.getY();
-            int rCenterX = (int)rightCenter.getX();
-            int rCenterY = (int)rightCenter.getY();
+            int lCenterX = (int)leftCenter.getX(), lCenterY = (int)leftCenter.getY(), rCenterX = (int)rightCenter.getX(), rCenterY = (int)rightCenter.getY();
 
             if (lCenterX == rCenterX)
-            {
-                for (int y = lCenterY; y < rCenterY; y++)
-                    tileMap[y][lCenterX] = -2;
-            }
+                ExtraTools.fillSector(tileMap, -2, lCenterX - 1, lCenterX + 1, lCenterY, rCenterY);
             else
-            {
-                for (int x = lCenterX; x < rCenterX; x++)
-                    tileMap[lCenterY][x] = -2;
-            }
+                ExtraTools.fillSector(tileMap, -2, lCenterX, rCenterX, lCenterY - 1, lCenterY + 1);
 
             placeHallways(leaf.getLeft());
             placeHallways(leaf.getRight());
@@ -106,28 +75,111 @@ public class BSPTree
 
     private void placeRooms()
     {
+        // Place floor tiles
         for (BSPLeaf leaf : root.getLeaves())
         {
             Room temp = new MonsterRoom(leaf, 5);
             leaf.setRoom(temp);
 
-            for (int r = temp.getY(); r < temp.getY() + temp.getH(); r++)
+            ExtraTools.fillSector(tileMap, -1, temp.getX(), temp.getX() + temp.getW(), temp.getY(), temp.getY() + temp.getH());
+        }
+    }
+
+    public void adjustMap(int hallwayWidth)
+    {
+        int repeat = hallwayWidth + 1;
+
+        while (repeat > 0)
+        {
+            for (BSPLeaf leaf : root.getLeaves())
             {
-                for (int c = temp.getX(); c < temp.getX() + temp.getW(); c++)
+                Room leafRoom = leaf.getRoom();
+                int roomX = leafRoom.getX(), roomY = leafRoom.getY(), roomW= leafRoom.getW(), roomH = leafRoom.getH();
+
+                int[] wallCounts = ExtraTools.getRoomSurroundings(tileMap, leafRoom);
+
+                if (wallCounts[0] > hallwayWidth)
+                    ExtraTools.fillSector(tileMap, -1, roomX, roomX + roomW, roomY - 1, roomY);
+
+                if (wallCounts[1] > hallwayWidth)
+                    ExtraTools.fillSector(tileMap, -1, roomX, roomX + 1, roomY, roomY + roomH);
+
+                if (wallCounts[2] > hallwayWidth)
+                    ExtraTools.fillSector(tileMap, -1, roomX, roomX + roomW, roomY + 1, roomY);
+
+                if (wallCounts[3] > hallwayWidth)
+                    ExtraTools.fillSector(tileMap, -1, roomX, roomX - 1, roomY, roomY + roomH);
+            }
+
+            repeat -= 1;
+        }
+    }
+
+    public void placeWalls()
+    {
+        int pad = 1;
+
+        // Initial wall placement
+        for (int r = pad; r < tileMap.length - pad; r++)
+        {
+            for (int c = pad; c < tileMap[r].length - pad; c++)
+            {
+
+                if (tileMap[r + 1][c] == -1 || tileMap[r - 1][c] == -1 || tileMap[r][c + 1] == -1 || tileMap[r][c - 1] == -1 ||
+                        tileMap[r + 1][c + 1] == -1 || tileMap[r + 1][c - 1] == -1 || tileMap[r - 1][c + 1] == -1 || tileMap[r - 1][c - 1] == -1)
                 {
-                    tileMap[r][c] = -1;
+                    if (tileMap[r][c] == -2)
+                        tileMap[r][c] = -4;
+
+                    if (tileMap[r][c] == 0)
+                        tileMap[r][c] = -3;
                 }
             }
         }
     }
 
-    public void checkTooSmall()
+
+    // DEBUG METHODS
+
+    private void printMap()
+    {
+        for (int r = 0; r < tileMap.length; r++)
+        {
+            for (int c = 0; c < tileMap[r].length; c++)
+            {
+                System.out.print(Format.left(tileMap[r][c], 4));
+            }
+            System.out.println();
+        }
+    }
+
+    private void checkTooSmall()
     {
         for (BSPLeaf leaf : root.getLeaves())
         {
             if (leaf.getH() < 15 || leaf.getW() < 15)
             {
                 System.out.println("Gen failed.");
+            }
+        }
+    }
+
+    private void loadLeafBorders()
+    {
+        for (BSPLeaf leaf : root.getLeaves())
+        {
+            for (int r = leaf.getY(); r < leaf.getY() + leaf.getH(); r++)
+            {
+                if (r == leaf.getY() || r == leaf.getY() + leaf.getH() - 1)
+                {
+                    for (int c = leaf.getX(); c < leaf.getX() + leaf.getW(); c++)
+                        tileMap[r][c] = -10;
+                }
+                else
+                {
+                    tileMap[r][0] = -10;
+                    tileMap[r][leaf.getX() + leaf.getW() - 1] = -10;
+                }
             }
         }
     }
