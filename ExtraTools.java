@@ -29,23 +29,23 @@ public class ExtraTools
         {
             case 'N':
                 low = roomX - 1;
-                high = roomX + roomW + 1;
+                high = roomX + roomW;
                 axis = roomY - 1;
                 break;
             case 'S':
                 low = roomX - 1;
-                high = roomX + roomW + 1;
-                axis = roomY + roomH + 1;
+                high = roomX + roomW;
+                axis = roomY + roomH;
                 break;
             case 'W':
                 low = roomY - 1;
-                high = roomY + roomH + 1;
+                high = roomY + roomH;
                 axis = roomX - 1;
                 break;
             case 'E':
                 low = roomY - 1;
-                high = roomY + roomH + 1;
-                axis = roomX + roomW + 1;
+                high = roomY + roomH;
+                axis = roomX + roomW;
                 break;
             default:
                 break;
@@ -60,12 +60,12 @@ public class ExtraTools
                 if (map[axis][i] == -2)
                 {
                     int consec = 0;
-                    do
+
+                    while (i < high - 1 && map[axis][i + 1] == -2)
                     {
                         consec++;
                         i++;
                     }
-                    while (i < high - 1 && map[axis][i + 1] == -2);
 
                     if (consec > maxConsec)
                         maxConsec = consec;
@@ -76,12 +76,12 @@ public class ExtraTools
                 if (map[i][axis] == -2)
                 {
                     int consec = 0;
-                    do
+
+                    while (i < high - 1 && map[i + 1][axis] == -2)
                     {
                         consec++;
                         i++;
                     }
-                    while (i < high - 1 && map[i + 1][axis] == -2);
 
                     if (consec > maxConsec)
                         maxConsec = consec;

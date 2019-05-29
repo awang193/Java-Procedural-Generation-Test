@@ -13,12 +13,20 @@ public class GUI extends Application
     @Override
     public void start(Stage stage)
     {
-        BSPTree tree = new BSPTree(100, 100);
+        BSPTree tree = new BSPTree(30, 15);
+        tree.loadMap(false);
+
+        Group g = new Group();
+
+        g.getChildren().add(drawDungeon(tree, 0));
+
         tree.loadMap(true);
 
-        Group g = new Group(drawDungeon(tree));
+        g.getChildren().add(drawDungeon(tree, 200));
 
         stage.setScene(new Scene(g));
+
+
         stage.show();
     }
 
@@ -27,13 +35,13 @@ public class GUI extends Application
         launch(args);
     }
 
-    public static Canvas drawDungeon(BSPTree tree)
+    public static Canvas drawDungeon(BSPTree tree, int initX)
     {
 
-        int x = 0;
+        int x = initX;
         int y = 0;
 
-        Canvas cnv = new Canvas(tree.getDungeonWidth() * TILE_WIDTH, tree.getDungeonHeight() * TILE_WIDTH);
+        Canvas cnv = new Canvas(tree.getDungeonWidth() * 3 * TILE_WIDTH, tree.getDungeonHeight() * 3 * TILE_WIDTH);
         GraphicsContext gc = cnv.getGraphicsContext2D();
 
         int[][] map = tree.getTileMap();
@@ -60,6 +68,10 @@ public class GUI extends Application
                         gc.setFill(Color.RED);
                         gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
                         break;
+                    case -60:
+                        gc.setFill(Color.LIGHTGREEN);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
                     case -10:
                         gc.setFill(Color.GRAY);
                         gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
@@ -68,7 +80,7 @@ public class GUI extends Application
                 }
                 x += TILE_WIDTH;
             }
-            x = 0;
+            x = initX;
             y += TILE_WIDTH;
         }
 
