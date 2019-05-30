@@ -46,16 +46,15 @@ public class BSPTree
             for (int i = 0; i < 10000; i++)
                 checkTooSmall();
 
-            loadLeafBorders();
+            //loadLeafBorders();
             printMap();
-
             adjustMap(3);
         }
 
 
         System.out.println("########### POST ADJUST\n");
         printMap();
-        placeWalls();
+        //placeWalls();
 
     }
 
@@ -153,6 +152,15 @@ public class BSPTree
 
 
     // DEBUG METHODS
+
+    public void clearMap()
+    {
+        for (int r = 0; r < tileMap.length; r++)
+        {
+            for (int c = 0; c < tileMap[0].length; c++)
+                tileMap[r][c] = 0;
+        }
+    }
 
     private void printMap()
     {

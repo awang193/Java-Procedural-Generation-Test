@@ -59,7 +59,7 @@ public class ExtraTools
             {
                 if (map[axis][i] == -2)
                 {
-                    int consec = 0;
+                    int consec = 1;
 
                     while (i < high - 1 && map[axis][i + 1] == -2)
                     {
@@ -75,7 +75,7 @@ public class ExtraTools
             {
                 if (map[i][axis] == -2)
                 {
-                    int consec = 0;
+                    int consec = 1;
 
                     while (i < high - 1 && map[i + 1][axis] == -2)
                     {

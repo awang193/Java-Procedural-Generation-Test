@@ -13,16 +13,16 @@ public class GUI extends Application
     @Override
     public void start(Stage stage)
     {
-        BSPTree tree = new BSPTree(30, 15);
-        tree.loadMap(false);
-
+        BSPTree tree = new BSPTree(100, 100);
         Group g = new Group();
 
+
+        tree.loadMap(false);
         g.getChildren().add(drawDungeon(tree, 0));
 
-        tree.loadMap(true);
+        tree.adjustMap(3);
+        g.getChildren().add(drawDungeon(tree, 700));
 
-        g.getChildren().add(drawDungeon(tree, 200));
 
         stage.setScene(new Scene(g));
 
