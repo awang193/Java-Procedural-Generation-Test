@@ -17,11 +17,8 @@ public class GUI extends Application
         Group g = new Group();
 
 
-        tree.loadMap(false);
+        tree.loadMap(true);
         g.getChildren().add(drawDungeon(tree, 0));
-
-        tree.adjustMap(3);
-        g.getChildren().add(drawDungeon(tree, 700));
 
 
         stage.setScene(new Scene(g));
@@ -68,7 +65,11 @@ public class GUI extends Application
                         gc.setFill(Color.RED);
                         gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
                         break;
-                    case -60:
+                    case -98:
+                        gc.setFill(Color.ROSYBROWN);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+                    case -99:
                         gc.setFill(Color.LIGHTGREEN);
                         gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
                         break;

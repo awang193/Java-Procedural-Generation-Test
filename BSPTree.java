@@ -1,6 +1,7 @@
 import apcslib.Format;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class BSPTree
@@ -41,20 +42,10 @@ public class BSPTree
         placeHallways(root);
         placeRooms();
 
-        if (debug)
-        {
-            for (int i = 0; i < 10000; i++)
-                checkTooSmall();
+        adjustMap(3);
+        placeWalls();
 
-            //loadLeafBorders();
-            printMap();
-            adjustMap(3);
-        }
-
-
-        System.out.println("########### POST ADJUST\n");
-        printMap();
-        //placeWalls();
+        placeSpecial();
 
     }
 
@@ -101,26 +92,26 @@ public class BSPTree
 
                 if (wallCounts[0] > hallwayWidth || wallCounts[0] % hallwayWidth > 0)
                 {
-                    ExtraTools.fillSector(tileMap, -60, leafRoom.getX(), leafRoom.getX() + leafRoom.getW(), leafRoom.getY() - 1, leafRoom.getY());
+                    ExtraTools.fillSector(tileMap, -1, leafRoom.getX(), leafRoom.getX() + leafRoom.getW(), leafRoom.getY() - 1, leafRoom.getY());
                     leafRoom.setY(leafRoom.getY() - 1);
                     leafRoom.setH(leafRoom.getH() + 1);
                 }
 
                 if (wallCounts[1] > hallwayWidth || wallCounts[0] % hallwayWidth > 0)
                 {
-                    ExtraTools.fillSector(tileMap, -60, leafRoom.getX() + leafRoom.getW(), leafRoom.getX() + leafRoom.getW() + 1, leafRoom.getY(), leafRoom.getY() + leafRoom.getH());
+                    ExtraTools.fillSector(tileMap, -1, leafRoom.getX() + leafRoom.getW(), leafRoom.getX() + leafRoom.getW() + 1, leafRoom.getY(), leafRoom.getY() + leafRoom.getH());
                     leafRoom.setW(leafRoom.getW() + 1);
                 }
 
                 if (wallCounts[2] > hallwayWidth || wallCounts[0] % hallwayWidth > 0)
                 {
-                    ExtraTools.fillSector(tileMap, -60, leafRoom.getX(), leafRoom.getX() + leafRoom.getW(), leafRoom.getY() + leafRoom.getH(), leafRoom.getY() + leafRoom.getH() + 1);
+                    ExtraTools.fillSector(tileMap, -1, leafRoom.getX(), leafRoom.getX() + leafRoom.getW(), leafRoom.getY() + leafRoom.getH(), leafRoom.getY() + leafRoom.getH() + 1);
                     leafRoom.setH(leafRoom.getH() + 1);
                 }
 
                 if (wallCounts[3] > hallwayWidth || wallCounts[0] % hallwayWidth > 0)
                 {
-                    ExtraTools.fillSector(tileMap, -60, leafRoom.getX() - 1, leafRoom.getX(), leafRoom.getY(), leafRoom.getY() + leafRoom.getH());
+                    ExtraTools.fillSector(tileMap, -1, leafRoom.getX() - 1, leafRoom.getX(), leafRoom.getY(), leafRoom.getY() + leafRoom.getH());
                     leafRoom.setX(leafRoom.getX() - 1);
                     leafRoom.setW(leafRoom.getW() + 1);
                 }
@@ -130,8 +121,14 @@ public class BSPTree
         }
     }
 
+    private boolean makeSurroundCondition(int r, int c, int tileType)
+    {
+        return tileMap[r + 1][c] == tileType || tileMap[r - 1][c] == tileType || tileMap[r][c + 1] == tileType || tileMap[r][c - 1] == tileType || tileMap[r + 1][c + 1] == tileType || tileMap[r + 1][c - 1] == tileType || tileMap[r - 1][c + 1] == tileType || tileMap[r - 1][c - 1] == tileType;
+    }
+
     public void placeWalls()
     {
+        // Padding for room generation
         int pad = 1;
 
         // Initial wall placement
@@ -140,8 +137,7 @@ public class BSPTree
             for (int c = pad; c < tileMap[r].length - pad; c++)
             {
 
-                if (tileMap[r + 1][c] == -1 || tileMap[r - 1][c] == -1 || tileMap[r][c + 1] == -1 || tileMap[r][c - 1] == -1 ||
-                        tileMap[r + 1][c + 1] == -1 || tileMap[r + 1][c - 1] == -1 || tileMap[r - 1][c + 1] == -1 || tileMap[r - 1][c - 1] == -1)
+                if (makeSurroundCondition(r, c, -1))
                 {
                     if (tileMap[r][c] == -2)
                         tileMap[r][c] = -4;
@@ -151,6 +147,38 @@ public class BSPTree
                 }
             }
         }
+
+        // Place walls around hallways
+        for (int r = pad; r < tileMap.length - pad; r++)
+            for (int c = pad; c < tileMap[r].length - pad; c++)
+                if (tileMap[r][c] == 0 && makeSurroundCondition(r, c, -2))
+                    tileMap[r][c] = -3;
+    }
+
+    public void placeSpecial()
+    {
+        ArrayList<BSPLeaf> leaves = root.getLeaves();
+
+        Room spawn = leaves.get(0).getRoom();
+
+        int spawnX = (int)spawn.getCenter().getX();
+        int spawnY = (int)spawn.getCenter().getY();
+
+        tileMap[spawnY][spawnX] = -99;
+
+        Room end = leaves.get(leaves.size() - 1).getRoom();
+
+        int endX = (int)end.getCenter().getX();
+        int endY = (int)end.getCenter().getY();
+
+        ExtraTools.fillSector(tileMap, -98, endX - 1, endX + 2, endY - 1, endY + 2);
+
+        Room test = root.getLeaves().get(0).getRoom();
+
+        int centerX = (int)spawn.getCenter().getX();
+        int centerY = (int)spawn.getCenter().getY();
+
+        tileMap[centerY][centerX] = -99;
     }
 
 

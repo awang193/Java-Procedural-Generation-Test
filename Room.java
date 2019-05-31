@@ -14,13 +14,13 @@ public abstract class Room
         int leafW = leaf.getW();
         int leafH = leaf.getH();
 
-        x = leafX + ExtraTools.randomRange(PADDING, leafW / 5);
-        y = leafY + ExtraTools.randomRange(PADDING, leafH / 5);
+        x = leafX + ExtraTools.randomRange(PADDING, leafW / 4);
+        y = leafY + ExtraTools.randomRange(PADDING, leafH / 4);
         w = leafW - (this.x - leafX) - PADDING;
         h = leafH - (this.y - leafY) - PADDING;
 
-        w -= ExtraTools.randomRange(PADDING, this.w / 5);
-        h -= ExtraTools.randomRange(PADDING, this.h / 5);
+        w -= ExtraTools.randomRange(PADDING, this.w / 4);
+        h -= ExtraTools.randomRange(PADDING, this.h / 4);
 
         center = new Point(x + w/2, y + h/2);
     }
