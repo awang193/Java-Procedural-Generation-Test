@@ -9,12 +9,70 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.awt.*;
+
 public class GUI extends Application
 {
-    private static final int TILE_WIDTH = 6;
+    private static final int TILE_WIDTH = 32;
 
     private boolean camUp, camDown, camLeft, camRight;
     private int camX = 0, camY = 0, camW = 800, camH = 800;
+
+    public Canvas drawDungeon(BSPTree btree, int initX)
+    {
+        int x = initX;
+        int y = 0;
+
+        Canvas cnv = new Canvas(btree.getDungeonWidth() * TILE_WIDTH, btree.getDungeonHeight() * TILE_WIDTH);
+        GraphicsContext gc = cnv.getGraphicsContext2D();
+
+        int[][] map = btree.getTileMap();
+
+        // Draw tiles
+        for (int r = 0; r < map.length; r++)
+        {
+            for (int c = 0; c < map[r].length; c++)
+            {
+                switch (map[r][c])
+                {
+                    case -1:
+                        gc.setFill(Color.BLUE);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+                    case -2:
+                        gc.setFill(Color.BLACK);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+                    case -3:
+                        gc.setFill(Color.LIGHTBLUE);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+                    case -4:
+                        gc.setFill(Color.RED);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+                    case -98:
+                        gc.setFill(Color.ROSYBROWN);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+                    case -99:
+                        gc.setFill(Color.LIGHTGREEN);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+                    case -10:
+                        gc.setFill(Color.GRAY);
+                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
+                        break;
+
+                }
+                x += TILE_WIDTH;
+            }
+            x = initX;
+            y += TILE_WIDTH;
+        }
+
+        return cnv;
+    }
 
     @Override
     public void start(Stage stage)
@@ -22,10 +80,15 @@ public class GUI extends Application
         BSPTree tree = new BSPTree(100, 100);
         tree.loadMap(true);
 
+        Point rootRoomCenter = tree.getRoot().getLeaves().get(0).getRoom().getCenter();
+        Character character = new Character(rootRoomCenter.getX(), rootRoomCenter.getY());
+
         Group g = new Group();
         Scene scene = new Scene(g, 800, 800);
 
         Canvas canvas = drawDungeon(tree, 0);
+        Canvas canvas2 = new Canvas(100 * TILE_WIDTH, 100 * TILE_WIDTH);
+        GraphicsContext gc = canvas2.getGraphicsContext2D();
 
         g.getChildren().add(canvas);
 
@@ -94,19 +157,44 @@ public class GUI extends Application
             }
         });
 
+        // Animation to move camera
         AnimationTimer animationTimer = new AnimationTimer()
         {
             @Override
             public void handle(long now)
             {
 
+                gc.setFill(Color);
+                gc.fillRect(character.getX(), character.getY(), 10, 10);
+
                 double delta = TILE_WIDTH / 3;
 
-                if (camUp) camY += delta;
-                if (camDown) camY -= delta;
-                if (camLeft) camX += delta;
-                if (camRight) camX -= delta;
+                if (camUp)
+                {
+                    camY += delta;
+                    character.move('N', delta);
+                }
 
+                if (camDown)
+                {
+                    camY -= delta;
+                    character.move('S', delta);
+                }
+
+                if (camLeft)
+                {
+                    camX += delta;
+                    character.move('W', delta);
+                }
+
+                if (camRight)
+                {
+                    camX -= delta;
+                    character.move('E', delta);
+                }
+
+                gc.setFill(Color.AQUAMARINE);
+                gc.fillRect(character.getX(), character.getY(), 10, 10);
                 canvas.setTranslateX(camX);
                 canvas.setTranslateY(camY);
             }
@@ -121,61 +209,5 @@ public class GUI extends Application
     public static void main(String[] args)
     {
         launch(args);
-    }
-
-    public static Canvas drawDungeon(BSPTree tree, int initX)
-    {
-
-        int x = initX;
-        int y = 0;
-
-        Canvas cnv = new Canvas(tree.getDungeonWidth() * TILE_WIDTH, tree.getDungeonHeight() * TILE_WIDTH);
-        GraphicsContext gc = cnv.getGraphicsContext2D();
-
-        int[][] map = tree.getTileMap();
-
-        for (int r = 0; r < map.length; r++)
-        {
-            for (int c = 0; c < map[r].length; c++)
-            {
-                switch (map[r][c])
-                {
-                    case -1:
-                        gc.setFill(Color.BLUE);
-                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
-                        break;
-                    case -2:
-                        gc.setFill(Color.BLACK);
-                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
-                        break;
-                    case -3:
-                        gc.setFill(Color.LIGHTBLUE);
-                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
-                        break;
-                    case -4:
-                        gc.setFill(Color.RED);
-                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
-                        break;
-                    case -98:
-                        gc.setFill(Color.ROSYBROWN);
-                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
-                        break;
-                    case -99:
-                        gc.setFill(Color.LIGHTGREEN);
-                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
-                        break;
-                    case -10:
-                        gc.setFill(Color.GRAY);
-                        gc.fillRect(x, y, TILE_WIDTH, TILE_WIDTH);
-                        break;
-
-                }
-                x += TILE_WIDTH;
-            }
-            x = initX;
-            y += TILE_WIDTH;
-        }
-
-        return cnv;
     }
 }

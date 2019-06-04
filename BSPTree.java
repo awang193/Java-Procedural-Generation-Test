@@ -37,6 +37,11 @@ public class BSPTree
         return tileMap;
     }
 
+    public BSPLeaf getRoot()
+    {
+        return root;
+    }
+
     public void loadMap(boolean debug)
     {
         placeHallways(root);

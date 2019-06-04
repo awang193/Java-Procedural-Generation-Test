@@ -2,7 +2,7 @@ import javafx.scene.image.Image;
 
 public enum Tile
 {
-    LEFTWALL ()
+    LEFTWALL (null);
 
     public final static int TILE_WIDTH = 64;
 
@@ -11,8 +11,8 @@ public enum Tile
 
     Tile(Image img)
     {
-        x = xPos;
-        y = yPos;
+        //x = xPos;
+        //y = yPos;
         texture = img;
     }
 }
