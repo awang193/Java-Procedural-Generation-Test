@@ -1,8 +1,11 @@
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -10,20 +13,108 @@ public class GUI extends Application
 {
     private static final int TILE_WIDTH = 6;
 
+    private boolean camUp, camDown, camLeft, camRight;
+    private int camX = 0, camY = 0, camW = 800, camH = 800;
+
     @Override
     public void start(Stage stage)
     {
         BSPTree tree = new BSPTree(100, 100);
-        Group g = new Group();
-
-
         tree.loadMap(true);
-        g.getChildren().add(drawDungeon(tree, 0));
+
+        Group g = new Group();
+        Scene scene = new Scene(g, 800, 800);
+
+        Canvas canvas = drawDungeon(tree, 0);
+
+        g.getChildren().add(canvas);
 
 
-        stage.setScene(new Scene(g));
+        // On keypress
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            @Override
+            public void handle(KeyEvent event)
+            {
+                switch (event.getCode())
+                {
+                    case W:
+                        System.out.println("W pressed");
+                        camUp = true;
+                        break;
+                    case A:
+                        System.out.println("A pressed");
+                        camLeft = true;
+                        break;
+                    case S:
+                        System.out.println("S pressed");
+                        camDown = true;
+                        break;
+                    case D:
+                        System.out.println("D pressed");
+                        camRight = true;
+                        break;
+                    default:
+                        break;
+                }
 
+                System.out.println("Up: " + camUp + " Down: " + camDown + " Left: " + camLeft + " Right: " + camRight);
+            }
+        });
 
+        // On key release
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>()
+        {
+            @Override
+            public void handle(KeyEvent event)
+            {
+                switch (event.getCode())
+                {
+                    case W:
+                        System.out.println("W released");
+                        camUp = false;
+                        break;
+                    case A:
+                        System.out.println("A released");
+                        camLeft = false;
+                        break;
+                    case S:
+                        System.out.println("S released");
+                        camDown = false;
+                        break;
+                    case D:
+                        System.out.println("D released");
+                        camRight = false;
+                        break;
+                    default:
+                        break;
+                }
+
+                System.out.println("Up: " + camUp + " Down: " + camDown + " Left: " + camLeft + " Right: " + camRight);
+            }
+        });
+
+        AnimationTimer animationTimer = new AnimationTimer()
+        {
+            @Override
+            public void handle(long now)
+            {
+
+                double delta = TILE_WIDTH / 3;
+
+                if (camUp) camY += delta;
+                if (camDown) camY -= delta;
+                if (camLeft) camX += delta;
+                if (camRight) camX -= delta;
+
+                canvas.setTranslateX(camX);
+                canvas.setTranslateY(camY);
+            }
+        };
+
+        animationTimer.start();
+
+        stage.setScene(scene);
         stage.show();
     }
 
@@ -38,7 +129,7 @@ public class GUI extends Application
         int x = initX;
         int y = 0;
 
-        Canvas cnv = new Canvas(tree.getDungeonWidth() * 3 * TILE_WIDTH, tree.getDungeonHeight() * 3 * TILE_WIDTH);
+        Canvas cnv = new Canvas(tree.getDungeonWidth() * TILE_WIDTH, tree.getDungeonHeight() * TILE_WIDTH);
         GraphicsContext gc = cnv.getGraphicsContext2D();
 
         int[][] map = tree.getTileMap();

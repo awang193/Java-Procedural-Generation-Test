@@ -81,7 +81,7 @@ public class BSPTree
 
     public void adjustMap(int hallwayWidth)
     {
-        int repeat = hallwayWidth;
+        int repeat = 25;
 
         while (repeat > 0)
         {
@@ -90,26 +90,26 @@ public class BSPTree
 
                 int[] wallCounts = ExtraTools.getRoomSurroundings(tileMap, leafRoom);
 
-                if (wallCounts[0] > hallwayWidth || wallCounts[0] % hallwayWidth > 0)
+                if (wallCounts[0] > 2 * hallwayWidth)
                 {
                     ExtraTools.fillSector(tileMap, -1, leafRoom.getX(), leafRoom.getX() + leafRoom.getW(), leafRoom.getY() - 1, leafRoom.getY());
                     leafRoom.setY(leafRoom.getY() - 1);
                     leafRoom.setH(leafRoom.getH() + 1);
                 }
 
-                if (wallCounts[1] > hallwayWidth || wallCounts[0] % hallwayWidth > 0)
+                if (wallCounts[1] > 2 * hallwayWidth)
                 {
                     ExtraTools.fillSector(tileMap, -1, leafRoom.getX() + leafRoom.getW(), leafRoom.getX() + leafRoom.getW() + 1, leafRoom.getY(), leafRoom.getY() + leafRoom.getH());
                     leafRoom.setW(leafRoom.getW() + 1);
                 }
 
-                if (wallCounts[2] > hallwayWidth || wallCounts[0] % hallwayWidth > 0)
+                if (wallCounts[2] > 2 * hallwayWidth)
                 {
                     ExtraTools.fillSector(tileMap, -1, leafRoom.getX(), leafRoom.getX() + leafRoom.getW(), leafRoom.getY() + leafRoom.getH(), leafRoom.getY() + leafRoom.getH() + 1);
                     leafRoom.setH(leafRoom.getH() + 1);
                 }
 
-                if (wallCounts[3] > hallwayWidth || wallCounts[0] % hallwayWidth > 0)
+                if (wallCounts[3] > 2 * hallwayWidth)
                 {
                     ExtraTools.fillSector(tileMap, -1, leafRoom.getX() - 1, leafRoom.getX(), leafRoom.getY(), leafRoom.getY() + leafRoom.getH());
                     leafRoom.setX(leafRoom.getX() - 1);

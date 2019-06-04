@@ -38,13 +38,13 @@ public class ExtraTools
                 axis = roomY + roomH;
                 break;
             case 'W':
-                low = roomY - 1;
-                high = roomY + roomH;
+                low = roomY;
+                high = roomY + roomH - 1;
                 axis = roomX - 1;
                 break;
             case 'E':
-                low = roomY - 1;
-                high = roomY + roomH;
+                low = roomY;
+                high = roomY + roomH - 1;
                 axis = roomX + roomW;
                 break;
             default:
