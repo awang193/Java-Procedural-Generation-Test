@@ -16,7 +16,7 @@ public class GUI extends Application
     private static final int TILE_WIDTH = 32;
 
     private boolean camUp, camDown, camLeft, camRight;
-    private int camX = 0, camY = 0, camW = 800, camH = 800;
+    private double camX = 0, camY = 0, camW = 800, camH = 800;
 
     public Canvas drawDungeon(BSPTree btree, int initX)
     {
@@ -78,20 +78,22 @@ public class GUI extends Application
     public void start(Stage stage)
     {
         BSPTree tree = new BSPTree(100, 100);
-        tree.loadMap(true);
-
-        Point rootRoomCenter = tree.getRoot().getLeaves().get(0).getRoom().getCenter();
-        Character character = new Character(rootRoomCenter.getX(), rootRoomCenter.getY());
+        tree.loadMap();
 
         Group g = new Group();
         Scene scene = new Scene(g, 800, 800);
 
+        Character character = new Character(scene.getWidth() / 2, scene.getHeight() / 2);
+
         Canvas canvas = drawDungeon(tree, 0);
-        Canvas canvas2 = new Canvas(100 * TILE_WIDTH, 100 * TILE_WIDTH);
+        Canvas canvas2 = new Canvas(scene.getWidth(), scene.getHeight());
+
         GraphicsContext gc = canvas2.getGraphicsContext2D();
 
-        g.getChildren().add(canvas);
+        gc.setFill(Color.AQUAMARINE);
+        gc.fillRect(character.getX(), character.getY(), 32, 32);
 
+        g.getChildren().addAll(canvas, canvas2);
 
         // On keypress
         scene.setOnKeyPressed(new EventHandler<KeyEvent>()
@@ -164,10 +166,7 @@ public class GUI extends Application
             public void handle(long now)
             {
 
-                gc.setFill(Color);
-                gc.fillRect(character.getX(), character.getY(), 10, 10);
-
-                double delta = TILE_WIDTH / 3;
+                double delta = TILE_WIDTH / 4;
 
                 if (camUp)
                 {
@@ -193,8 +192,6 @@ public class GUI extends Application
                     character.move('E', delta);
                 }
 
-                gc.setFill(Color.AQUAMARINE);
-                gc.fillRect(character.getX(), character.getY(), 10, 10);
                 canvas.setTranslateX(camX);
                 canvas.setTranslateY(camY);
             }

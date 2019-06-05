@@ -42,7 +42,7 @@ public class BSPTree
         return root;
     }
 
-    public void loadMap(boolean debug)
+    public void loadMap()
     {
         placeHallways(root);
         placeRooms();

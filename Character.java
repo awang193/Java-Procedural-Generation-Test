@@ -1,63 +1,58 @@
-public class Character
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import javafx.scene.shape.Rectangle;
+
+public class Character extends Movable
 {
-    private double x, y;
-    private Room bound;
+    private int level, health, damage;
 
-    private char orientation;
+    private Room currentRoom;
 
-    public Character(double xPos, double yPos)
+    public Character(double x, double y, int lv, int hp, int dmg)
     {
-        x = xPos;
-        y = yPos;
+        super(x, y);
+
+        level = lv;
+        health = hp;
+        damage = dmg;
     }
 
-    public double getX()
+    public void addHealth(int amount)
     {
-        return x;
+        health += amount;
     }
 
-    public double getY()
+    public void levelUp()
     {
-        return y;
+        level++;
     }
 
-    public void move(char direction, double delta)
+    public void scanRooms(ArrayList<BSPLeaf> leaves)
     {
-        orientation = direction;
-
-        double newX = x;
-        double newY = y;
-
-        switch (direction)
+        for (BSPLeaf leaf : leaves)
         {
-            case 'N':
-                newY += delta;
+            Room temp = leaf.getRoom();
 
-                //if (newY < bound.getY()) newY = y;
-
-                break;
-            case 'S':
-                newY -= delta;
-
-                //if (newY > bound.getY() + bound.getH() - 1) newY = y;
-
-                break;
-            case 'W':
-                newX -= delta;
-
-                //if (newX < bound.getX()) newX = x;
-
-                break;
-            case 'E':
-                newX += delta;
-
-                //if (newX > bound.getX() + bound.getW() - 1) newX = x;
-
-            default:
-                break;
+            if (temp.getX() < this.getX() && this.getX() < temp.getX() + temp.getW() &&
+                temp.getY() < this.getY() && this.getY() < temp.getY() + temp.getH())
+            {
+                currentRoom = temp;
+            }
         }
+    }
 
-        x = newX;
-        y = newY;
+    public void attack()
+    {
+        if (currentRoom instanceof MonsterRoom)
+        {
+            for (Monster m : ((MonsterRoom) currentRoom).getMonsters())
+            {
+                switch (this.getOrientation())
+                {
+                    case 'N':
+                         // START HERE TOMORROW FINISH IMPLEMENTING ATTACK
+                }
+            }
+        }
     }
 }

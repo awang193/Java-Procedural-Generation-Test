@@ -12,4 +12,9 @@ public class MonsterRoom extends Room
         this.numMonsters = numMonsters;
         this.monsters = new ArrayList<Monster>();
     }
+
+    public ArrayList<Monster> getMonsters()
+    {
+        return monsters;
+    }
 }
