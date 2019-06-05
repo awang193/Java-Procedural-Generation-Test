@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GUI extends Application
 {
@@ -77,13 +78,13 @@ public class GUI extends Application
     @Override
     public void start(Stage stage)
     {
-        BSPTree tree = new BSPTree(100, 100);
+        BSPTree tree = new BSPTree(20, 20);
         tree.loadMap();
 
         Group g = new Group();
         Scene scene = new Scene(g, 800, 800);
 
-        Character character = new Character(scene.getWidth() / 2, scene.getHeight() / 2);
+        Character character = new Character(tree, scene.getWidth() / 2, scene.getHeight() / 2, 1, 100, 10);
 
         Canvas canvas = drawDungeon(tree, 0);
         Canvas canvas2 = new Canvas(scene.getWidth(), scene.getHeight());
@@ -167,6 +168,11 @@ public class GUI extends Application
             {
 
                 double delta = TILE_WIDTH / 4;
+
+                BSPLeaf r = tree.getRoot();
+                ArrayList<BSPLeaf> test = r.getLeaves();
+
+                character.scanRooms(test);
 
                 if (camUp)
                 {

@@ -1,11 +1,12 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class Room
 {
-    private final int PADDING = 2;
+    protected final int PADDING = 2;
 
-    private int x, y, w, h;
-    private Point center;
+    protected int x, y, w, h;
+    protected Point center;
 
     public Room(BSPLeaf leaf)
     {

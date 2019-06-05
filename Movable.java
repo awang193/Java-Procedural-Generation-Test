@@ -1,7 +1,7 @@
 public abstract class Movable
 {
-    private double x, y;
-    private char orientation;
+    protected double x, y;
+    protected char orientation;
 
     public Movable(double xPos, double yPos)
     {
